@@ -176,6 +176,13 @@
             </div>
         </div>
 
+        <div class="row news" ng-if="studioViewsService.views.length == 0">
+            <div class="panel panel-info" ng-repeat="news in reststoreService.news">
+                <div class="panel-heading"><h3 class="panel-title">{{news.title}}</h3></div>
+                <div class="panel-body">{{news.body}}</div>
+            </div>
+        </div>
+
         <div class="row cv-views-container"
              data-masonry='{ "itemSelector": ".cv-view-container", "columnWidth": ".cv-views-gridsizer", "percentPosition": true }'>
 

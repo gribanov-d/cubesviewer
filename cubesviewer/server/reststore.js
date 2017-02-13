@@ -23,332 +23,352 @@
 
 "use strict";
 
-angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', '$cookies', 'cvOptions', 'cubesService', 'viewsService', 'dialogService', 'studioViewsService',
-                                                           function ($rootScope, $http, $cookies, cvOptions, cubesService, viewsService, dialogService, studioViewsService) {
+angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', '$cookies', 'cvOptions', 'cubesService',
+    'viewsService', 'dialogService', 'studioViewsService',
+    function ($rootScope, $http, $cookies, cvOptions, cubesService, viewsService, dialogService, studioViewsService) {
 
-	var reststoreService = this;
+        var reststoreService = this;
 
-	reststoreService.savedViews = [];
+        reststoreService.savedViews = [];
 
-    reststoreService.savedDashboards = [];
+        reststoreService.savedDashboards = [];
 
-    reststoreService.dashboard = null;
+        reststoreService.dashboard = null;
 
-	reststoreService.initialize = function() {
-		if (! cvOptions.backendUrl) return;
-		reststoreService.viewList();
-        reststoreService.newDashboard();
-	};
-
-    /**
-     * Returns a stored view from memory.
-     */
-	reststoreService.getSavedView = function(savedId) {
-        var view = $.grep(reststoreService.savedViews, function(ed) { return ed.id == savedId; });
-        if (view.length > 0) {
-            return view[0];
-        } else {
-            return null;
-        }
-    };
-
-    /**
-     * Save a view.
-     */
-    reststoreService.saveView = function (view) {
-
-        if (view.owner != cvOptions.user) {
-            dialogService.show('Cannot save a view that belongs to other user (try cloning the view).');
-            return;
-        }
-
-        var data = {
-            "id": view.savedId,
-            "name": view.params.name,
-            "shared": view.shared,
-            "data":  viewsService.serializeView(view),
-            "help": view.help
+        reststoreService.initialize = function () {
+            if (!cvOptions.backendUrl) return;
+            reststoreService.viewList();
+            reststoreService.newDashboard();
+            reststoreService.newsList();
         };
 
-        $http({
-        	"method": "POST",
-        	"url": cvOptions.backendUrl + "/view/save/",
-        	"data": JSON.stringify(data),
-        	"headers": {"X-CSRFToken": $cookies.get('csrftoken')},
-        }).then(reststoreService._viewSaveCallback(view), cubesService.defaultRequestErrorHandler);
+        /**
+         * Returns a stored view from memory.
+         */
+        reststoreService.getSavedView = function (savedId) {
+            var view = $.grep(reststoreService.savedViews, function (ed) {
+                return ed.id == savedId;
+            });
+            if (view.length > 0) {
+                return view[0];
+            } else {
+                return null;
+            }
+        };
 
-    };
+        /**
+         * Save a view.
+         */
+        reststoreService.saveView = function (view) {
 
-    /**
-     * Save callback
-     */
-    reststoreService._viewSaveCallback = function(view) {
+            if (view.owner != cvOptions.user) {
+                dialogService.show('Cannot save a view that belongs to other user (try cloning the view).');
+                return;
+            }
 
-        var view = view;
+            var data = {
+                "id": view.savedId,
+                "name": view.params.name,
+                "shared": view.shared,
+                "data": viewsService.serializeView(view),
+                "help": view.help
+            };
 
-        return function(data, status) {
-            data = data.data;
-        	if (view != null) {
-                view.savedId = data.id;
+            $http({
+                "method": "POST",
+                "url": cvOptions.backendUrl + "/view/save/",
+                "data": JSON.stringify(data),
+                "headers": {"X-CSRFToken": $cookies.get('csrftoken')},
+            }).then(reststoreService._viewSaveCallback(view), cubesService.defaultRequestErrorHandler);
 
-                // Manually update saved list to avoid detecting differences as the list hasn't been reloaded
-                var sview = reststoreService.getSavedView(view.savedId);
-                if (sview != null) {
-                    sview.name = view.params.name;
-                    sview.shared = view.shared;
-                    sview.data = viewsService.serializeView(view);
-                    sview.help = view.help;
+        };
+
+        /**
+         * Save callback
+         */
+        reststoreService._viewSaveCallback = function (view) {
+
+            var view = view;
+
+            return function (data, status) {
+                data = data.data;
+                if (view != null) {
+                    view.savedId = data.id;
+
+                    // Manually update saved list to avoid detecting differences as the list hasn't been reloaded
+                    var sview = reststoreService.getSavedView(view.savedId);
+                    if (sview != null) {
+                        sview.name = view.params.name;
+                        sview.shared = view.shared;
+                        sview.data = viewsService.serializeView(view);
+                        sview.help = view.help;
+                    }
+                }
+                reststoreService.viewList();
+
+                dialogService.show("View saved.");
+            }
+
+        };
+
+        /**
+         * Delete a view.
+         */
+        reststoreService.deleteView = function (view) {
+
+            if (view.savedId == 0) {
+                dialogService.show("Cannot delete this view as it hasn't been saved.");
+                return;
+            }
+            if (view.owner != cvOptions.user) {
+                dialogService.show('Cannot delete a view that belongs to other user.');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete and close this view?')) {
+                return;
+            }
+
+            var data = {
+                "id": view.savedId,
+                "data": ""
+            };
+
+            studioViewsService.closeView(view);
+
+            $http({
+                "method": "POST",
+                "url": cvOptions.backendUrl + "/view/save/",
+                "data": JSON.stringify(data),
+                "headers": {"X-CSRFToken": $cookies.get('csrftoken')}
+            }).then(reststoreService._viewDeleteCallback, cubesviewer.defaultRequestErrorHandler);
+
+        };
+
+        /*
+         * Delete callback
+         */
+        reststoreService._viewDeleteCallback = function () {
+            reststoreService.viewList();
+        };
+
+        /*
+         * Get view list.
+         */
+        reststoreService.viewList = function () {
+            $http.get(cvOptions.backendUrl + "/view/list/?timestamp=" + cubesviewer.timestamp).then(
+                reststoreService._viewListCallback, cubesService.defaultRequestErrorHandler);
+        };
+
+        reststoreService._viewListCallback = function (data, status) {
+            reststoreService.savedViews = data.data;
+        };
+
+        reststoreService.isViewChanged = function (view) {
+
+            if (view.savedId == 0) return false;
+
+            // Find saved copy
+            var sview = reststoreService.getSavedView(view.savedId);
+
+            // Find differences
+            if (sview != null) {
+                if (view.name != sview.name) return true;
+                if (view.shared != sview.shared) return true;
+                if (viewsService.serializeView(view) != sview.data) return true;
+            }
+
+            return false;
+
+        };
+
+        /**
+         * Change shared mode
+         */
+        reststoreService.shareView = function (view, sharedstate) {
+
+            if (view.owner != cvOptions.user) {
+                dialogService.show('Cannot share/unshare a view that belongs to other user (try cloning the view).');
+                return;
+            }
+
+            view.shared = ( sharedstate == 1 ? true : false );
+            reststoreService.saveView(view);
+
+        };
+
+        /**
+         * Loads a view from the backend.
+         * This is equivalent to other view adding methods in the cubesviewer.gui namespace,
+         * like "addViewCube" or "addViewObject", but thisloads the view definition from
+         * the storage backend.
+         */
+        reststoreService.addSavedView = function (savedViewId) {
+
+            // TODO: Check whether the server model is loaded, etc
+
+            var savedview = reststoreService.getSavedView(savedViewId);
+            if (!savedview) return;
+            var viewobject = $.parseJSON(savedview.data);
+            var view = studioViewsService.addViewObject(viewobject);
+
+            if (savedview.owner == cvOptions.user) {
+                view.savedId = savedview.id;
+                view.owner = savedview.owner;
+                view.shared = savedview.shared;
+                view.help = savedview.help;
+                view.name = savedview.name;
+            } else {
+                view.savedId = 0;
+                view.owner = cvOptions.user;
+                view.shared = false;
+                view.help = savedview.help;
+            }
+
+        };
+
+        reststoreService.newDashboard = function () {
+            reststoreService.dashboard = {
+                'id': 0,
+                'name': 'New',
+                'views': [],
+                'shared': false,
+                'is_default': false,
+                'saved': false,
+                'options': {
+                    'studioTwoColumn': false,
+                    'hideControls': false
                 }
             }
-            reststoreService.viewList();
-
-            dialogService.show("View saved.");
-        }
-
-    };
-
-    /**
-     * Delete a view.
-     */
-    reststoreService.deleteView = function (view) {
-
-        if (view.savedId == 0) {
-        	dialogService.show("Cannot delete this view as it hasn't been saved.");
-            return;
-        }
-        if (view.owner != cvOptions.user) {
-            dialogService.show('Cannot delete a view that belongs to other user.');
-            return;
-        }
-
-        if (! confirm('Are you sure you want to delete and close this view?')) {
-            return;
-        }
-
-        var data = {
-            "id": view.savedId,
-            "data": ""
         };
 
-        studioViewsService.closeView(view);
+        reststoreService.restoreDashboard = function (dashboard) {
+            reststoreService.dashboard = dashboard;
+            reststoreService.dashboard.views.forEach(function (v) {
+                var view = studioViewsService.addViewObject(v);
+            });
+            $.extend(cvOptions, dashboard.options);
+        };
 
-        $http({
-        	"method": "POST",
-        	"url": cvOptions.backendUrl + "/view/save/",
-        	"data": JSON.stringify(data),
-        	"headers": {"X-CSRFToken": $cookies.get('csrftoken')}
-         }).then(reststoreService._viewDeleteCallback, cubesviewer.defaultRequestErrorHandler);
-
-    };
-
-    /*
-     * Delete callback
-     */
-    reststoreService._viewDeleteCallback = function() {
-    	reststoreService.viewList();
-    };
-
-    /*
-     * Get view list.
-     */
-    reststoreService.viewList = function () {
-        $http.get(cvOptions.backendUrl + "/view/list/?timestamp=" + cubesviewer.timestamp).then(
-        		reststoreService._viewListCallback, cubesService.defaultRequestErrorHandler);
-    };
-
-    reststoreService._viewListCallback = function(data, status) {
-    	reststoreService.savedViews = data.data;
-    };
-
-    reststoreService.isViewChanged = function(view) {
-
-        if (view.savedId == 0) return false;
-
-        // Find saved copy
-        var sview = reststoreService.getSavedView(view.savedId);
-
-        // Find differences
-        if (sview != null) {
-            if (view.name != sview.name) return true;
-            if (view.shared != sview.shared) return true;
-            if (viewsService.serializeView(view) != sview.data) return true;
-        }
-
-        return false;
-
-	};
-
-    /**
-     * Change shared mode
-     */
-	reststoreService.shareView = function(view, sharedstate) {
-
-        if (view.owner != cvOptions.user) {
-            dialogService.show('Cannot share/unshare a view that belongs to other user (try cloning the view).');
-            return;
-        }
-
-        view.shared = ( sharedstate == 1 ? true : false );
-        reststoreService.saveView(view);
-
-    };
-
-    /**
-     * Loads a view from the backend.
-     * This is equivalent to other view adding methods in the cubesviewer.gui namespace,
-     * like "addViewCube" or "addViewObject", but thisloads the view definition from
-     * the storage backend.
-     */
-    reststoreService.addSavedView = function(savedViewId) {
-
-    	// TODO: Check whether the server model is loaded, etc
-
-        var savedview = reststoreService.getSavedView(savedViewId);
-        if (!savedview) return;
-        var viewobject = $.parseJSON(savedview.data);
-        var view = studioViewsService.addViewObject(viewobject);
-
-        if (savedview.owner == cvOptions.user) {
-        	view.savedId = savedview.id;
-        	view.owner = savedview.owner;
-        	view.shared = savedview.shared;
-            view.help = savedview.help;
-            view.name = savedview.name;
-        } else {
-        	view.savedId = 0;
-        	view.owner = cvOptions.user;
-        	view.shared = false;
-            view.help = savedview.help;
-        }
-
-    };
-
-    reststoreService.newDashboard = function() {
-        reststoreService.dashboard = {
-            'id': 0,
-            'name': 'New',
-            'views': [],
-            'shared': false,
-            'is_default': false,
-            'saved': false,
-            'options': {
-                'studioTwoColumn': false,
-                'hideControls': false
+        reststoreService.shareDashboard = function () {
+            var dashboard = reststoreService.dashboard;
+            if (reststoreService.dashboard.owner != cvOptions.user) {
+                dialogService.show('Cannot share/unshare a dashboard that belongs to other user (try cloning the dashboard).');
+                return;
             }
-        }
-    };
 
-    reststoreService.restoreDashboard = function(dashboard){
-        reststoreService.dashboard = dashboard;
-        reststoreService.dashboard.views.forEach(function(v){
-            var view = studioViewsService.addViewObject(v);
-        });
-        $.extend(cvOptions, dashboard.options);
-    };
+            reststoreService.dashboard.shared = !reststoreService.dashboard.shared;
+            reststoreService.saveDashboard();
 
-    reststoreService.shareDashboard = function() {
-        var dashboard = reststoreService.dashboard;
-        if (reststoreService.dashboard.owner != cvOptions.user) {
-            dialogService.show('Cannot share/unshare a dashboard that belongs to other user (try cloning the dashboard).');
-            return;
-        }
-
-        reststoreService.dashboard.shared = !reststoreService.dashboard.shared;
-        reststoreService.saveDashboard();
-
-    };
-
-    reststoreService.makeDefaultDashboard = function() {
-        var dashboard = reststoreService.dashboard;
-        if (reststoreService.dashboard.owner != cvOptions.user) {
-            dialogService.show('Cannot mark/unmark default a dashboard that belongs to other user (try cloning the dashboard).');
-            return;
-        }
-
-        reststoreService.dashboard.is_default = !reststoreService.dashboard.is_default;
-        reststoreService.saveDashboard();
-
-    };
-
-    reststoreService.dashboardList = function(){
-        $http.get(cvOptions.backendUrl + "/dashboard/list/?timestamp=" + cubesviewer.timestamp).then(
-        		reststoreService._dashboardListCallback, cubesService.defaultRequestErrorHandler);
-    };
-
-    reststoreService._dashboardListCallback = function(data, status) {
-        reststoreService.savedDashboards = data.data;
-    };
-
-   /**
-    * Save a dashboard.
-    */
-   reststoreService.saveDashboard = function () {
-       $http({
-           "method": "POST",
-           "url": cvOptions.backendUrl + "/dashboard/save/",
-           "data": JSON.stringify(reststoreService.dashboard),
-           "headers": {"X-CSRFToken": $cookies.get('csrftoken')}
-       }).then(reststoreService._saveDashboardCallback, cubesService.defaultRequestErrorHandler);
-
-   };
-
-   /**
-    * Save callback
-    */
-   reststoreService._saveDashboardCallback = function (data, status) {
-       data = data.data;
-       var _new = true;
-       reststoreService.savedDashboards.forEach(function(d){
-           if (d.id == data.id) {
-               d = data;
-               _new = false;
-           }
-       });
-       if (_new) {
-           reststoreService.savedDashboards.push(data);
-       }
-       dialogService.show("Dashboard saved.");
-   };
-
-   /**
-    * Delete a dashboard.
-    */
-   reststoreService.deleteDashboard = function () {
-       if (reststoreService.dashboard.owner != cvOptions.user) {
-            dialogService.show('Cannot delete a dashboard that belongs to other user.');
-            return;
-        }
-
-        if (! confirm('Are you sure you want to delete and close this dashboard?')) {
-            return;
-        }
-
-        var data = {
-            "id": reststoreService.dashboard.id
         };
-       $http({
-           "method": "POST",
-           "url": cvOptions.backendUrl + "/dashboard/delete/",
-           "data": JSON.stringify(data),
-           "headers": {"X-CSRFToken": $cookies.get('csrftoken')}
-       }).then(reststoreService._deleteDashboardCallback, cubesService.defaultRequestErrorHandler);
 
-   };
+        reststoreService.makeDefaultDashboard = function () {
+            var dashboard = reststoreService.dashboard;
+            if (reststoreService.dashboard.owner != cvOptions.user) {
+                dialogService.show('Cannot mark/unmark default a dashboard that belongs to other user (try cloning the dashboard).');
+                return;
+            }
 
-   /**
-    * Delete callback
-    */
-   reststoreService._deleteDashboardCallback = function (data, status) {
-       reststoreService.newDashboard();
-       var views = studioViewsService.views.slice();
-       views.forEach(function(v){
-           studioViewsService.closeView(v);
-       });
-       reststoreService.dashboardList();
-       dialogService.show("Dashboard deleted.");
-   };
+            reststoreService.dashboard.is_default = !reststoreService.dashboard.is_default;
+            reststoreService.saveDashboard();
 
-    reststoreService.initialize();
+        };
 
-}]);
+        reststoreService.dashboardList = function () {
+            $http.get(cvOptions.backendUrl + "/dashboard/list/?timestamp=" + cubesviewer.timestamp).then(
+                reststoreService._dashboardListCallback, cubesService.defaultRequestErrorHandler);
+        };
+
+        reststoreService._dashboardListCallback = function (data, status) {
+            reststoreService.savedDashboards = data.data;
+        };
+
+        /**
+         * Save a dashboard.
+         */
+        reststoreService.saveDashboard = function () {
+            $http({
+                "method": "POST",
+                "url": cvOptions.backendUrl + "/dashboard/save/",
+                "data": JSON.stringify(reststoreService.dashboard),
+                "headers": {"X-CSRFToken": $cookies.get('csrftoken')}
+            }).then(reststoreService._saveDashboardCallback, cubesService.defaultRequestErrorHandler);
+
+        };
+
+        /**
+         * Save callback
+         */
+        reststoreService._saveDashboardCallback = function (data, status) {
+            data = data.data;
+            var _new = true;
+            reststoreService.savedDashboards.forEach(function (d) {
+                if (d.id == data.id) {
+                    d = data;
+                    _new = false;
+                }
+            });
+            if (_new) {
+                reststoreService.savedDashboards.push(data);
+            }
+            dialogService.show("Dashboard saved.");
+        };
+
+        /**
+         * Delete a dashboard.
+         */
+        reststoreService.deleteDashboard = function () {
+            if (reststoreService.dashboard.owner != cvOptions.user) {
+                dialogService.show('Cannot delete a dashboard that belongs to other user.');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete and close this dashboard?')) {
+                return;
+            }
+
+            var data = {
+                "id": reststoreService.dashboard.id
+            };
+            $http({
+                "method": "POST",
+                "url": cvOptions.backendUrl + "/dashboard/delete/",
+                "data": JSON.stringify(data),
+                "headers": {"X-CSRFToken": $cookies.get('csrftoken')}
+            }).then(reststoreService._deleteDashboardCallback, cubesService.defaultRequestErrorHandler);
+
+        };
+
+        /**
+         * Delete callback
+         */
+        reststoreService._deleteDashboardCallback = function (data, status) {
+            reststoreService.newDashboard();
+            var views = studioViewsService.views.slice();
+            views.forEach(function (v) {
+                studioViewsService.closeView(v);
+            });
+            reststoreService.dashboardList();
+            dialogService.show("Dashboard deleted.");
+        };
+
+        reststoreService.newsList = function () {
+            $http.get(cvOptions.backendUrl + "/news?timestamp=" + cubesviewer.timestamp).then(
+                reststoreService._newsListCallback, cubesService.defaultRequestErrorHandler);
+        };
+
+        reststoreService._newsListCallback = function (data, status) {
+            reststoreService.news = data.data;
+            var month_ago = new Date();
+            // Month before.
+            month_ago.setMonth(month_ago.getMonth() - 1);
+            reststoreService.news = reststoreService.news.filter(function (n) {
+                return +new Date(n.date) > +month_ago;
+            });
+            reststoreService.news.reverse();
+        };
+
+        reststoreService.initialize();
+
+    }]);
 
