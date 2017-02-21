@@ -379,7 +379,7 @@ angular.module('cv.cubes').service("cubesService", ['$rootScope', '$log', 'cvOpt
 			} else if (field == "day") {
 				values.push(tdate.getDate());
 			} else {
-				dialogService.show("Wrong configuration of model: time role of level '" + level.name + "' is invalid.");
+				// dialogService.show("Wrong configuration of model: time role of level '" + level.name + "' is invalid.");
 			}
 		}
 

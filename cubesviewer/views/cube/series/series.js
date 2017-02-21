@@ -232,6 +232,8 @@ cubesviewer._seriesAddRows = function($scope, data, zaxis) {
 
 	var baseidx = ((view.params.xaxis == null) ? 0 : 1);
 
+    var xAxisDimension = view.cube.dimensionParts(view.params.xaxis);
+
 	var addedCols = [];
 	$(data.cells).each(function (idx, e) {
 
@@ -289,10 +291,16 @@ cubesviewer._seriesAddRows = function($scope, data, zaxis) {
 
 			var ag = $.grep(view.cube.aggregates, function(ag) { return ag.ref == view.params.yaxis })[0];
 
+			var asDate = null;
+			if (xAxisDimension.dimension.role === 'time') {
+                asDate = new (Function.prototype.bind.apply(Date, [null].concat(colKey.split('/'))));
+			}
+
 			var col = {
 				name: colKey,
 				field: colKey,
 				index : colKey,
+				asDate: asDate,
 				cellClass : "text-right",
 				//sorttype : "number",
 				cellTemplate: '<div class="ui-grid-cell-contents" title="TOOLTIP">{{ col.colDef.formatter(COL_FIELD, row, col) }}</div>',
