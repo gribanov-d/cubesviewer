@@ -1170,6 +1170,8 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "    <div>\n" +
     "        <h2 ng-show=\"view.getControlsHidden()\" style=\"margin-top: 5px;\">\n" +
     "            <i class=\"fa fa-fw fa-file-o\"></i> {{ view.getName() }}\n" +
+    "            <span ng-if=\"reststoreService.getCubeUpdate(view.cube.name)\"\n" +
+    "                  class=\"pull-right small\">Last date: {{reststoreService.getCubeUpdate(view.cube.name)}}</span>\n" +
     "        </h2>\n" +
     "\n" +
     "        <div ng-include=\"'views/cube/alerts.html'\"></div>\n" +
