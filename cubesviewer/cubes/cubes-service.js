@@ -332,6 +332,8 @@ angular.module('cv.cubes').service("cubesService", ['$rootScope', '$log', 'cvOpt
 				date_from.setDate(date_from.getDate() - 2);
 				date_to = new Date();
                 date_to.setDate(date_to.getDate() - 1);
+			} else if (datefilter.mode == "auto-lastupdated") {
+                date_from = view.last_updated;
 			}
 
 		} else if (datefilter.mode == "custom") {

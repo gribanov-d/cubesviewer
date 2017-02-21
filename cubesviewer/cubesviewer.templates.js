@@ -1243,10 +1243,11 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "        <div class=\"cv-view-viewinfo\" ng-hide=\"view.getControlsHidden()\">\n" +
     "            <div>\n" +
     "                <div class=\"label label-secondary cv-infopiece cv-view-viewinfo-cubename\"\n" +
-    "                     style=\"color: white; background-color: black;\">\n" +
+    "                     style=\"color: black;background: #bcf5ba;\">\n" +
     "                    <span><i class=\"fa fa-fw fa-cube\" title=\"Cube\"></i> <b class=\"hidden-xs hidden-sm\">Cube:</b> {{ view.cube.label }}</span>\n" +
     "                    <button type=\"button\" class=\"btn btn-info btn-xs\" style=\"visibility: hidden;\"><i\n" +
     "                            class=\"fa fa-fw fa-info\"></i></button>\n" +
+    "                    <span ng-if=\"reststoreService.getCubeUpdate(view.cube.name)\">Last date: {{reststoreService.getCubeUpdate(view.cube.name)}}</span>\n" +
     "                </div>\n" +
     "\n" +
     "                <div class=\"cv-view-viewinfo-drill\">\n" +
@@ -1467,6 +1468,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "                      <ul class=\"dropdown-menu cv-view-menu cv-view-menu-view\">\n" +
     "                        <li ng-click=\"setMode('custom')\"><a><i class=\"fa fa-fw\"></i> Custom</a></li>\n" +
     "                        <div class=\"divider\"></div>\n" +
+    "                        <li ng-click=\"setMode('auto-lastupdated')\" ng-if=\"view.last_updated\"><a><i class=\"fa fa-fw\"></i> Last updated</a></li>\n" +
     "                        <li ng-click=\"setMode('auto-yesterday')\"><a><i class=\"fa fa-fw\"></i> Yesterday</a></li>\n" +
     "                        <li ng-click=\"setMode('auto-last7d')\"><a><i class=\"fa fa-fw\"></i> Last 7 days</a></li>\n" +
     "                        <li ng-click=\"setMode('auto-last1m')\"><a><i class=\"fa fa-fw\"></i> Last month</a></li>\n" +

@@ -40,6 +40,7 @@ angular.module('cv.views.cube').filter("datefilterMode", ['$rootScope', 'cvOptio
 		var text = "None";
 		switch (val) {
 			case "custom": text = "Custom"; break;
+			case "auto-lastupdated": text = "Last updated"; break;
 			case "auto-yesterday": text = "Yesterday"; break;
 			case "auto-last7d": text = "Last 7 days"; break;
 			case "auto-last1m": text = "Last month"; break;

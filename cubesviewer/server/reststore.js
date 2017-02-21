@@ -35,11 +35,14 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
 
         reststoreService.dashboard = null;
 
+        reststoreService.updates = [];
+
         reststoreService.initialize = function () {
             if (!cvOptions.backendUrl) return;
             reststoreService.viewList();
             reststoreService.newDashboard();
             reststoreService.newsList();
+            reststoreService.updatesList();
         };
 
         /**
@@ -211,6 +214,16 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
             if (!savedview) return;
             var viewobject = $.parseJSON(savedview.data);
             var view = studioViewsService.addViewObject(viewobject);
+            var date_txt = reststoreService.getCubeUpdate(view.params.cubename);
+            if (date_txt) {
+                try {
+                    var re = /(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2})/g;
+                    var groups = re.exec(date_txt);
+                    view.last_updated = new Date(groups[1], groups[2], groups[3], groups[4], groups[5]);
+                    // Month starts from 0
+                    view.last_updated.setMonth(view.last_updated.getMonth() - 1);
+                } catch (e) {}
+            }
 
             if (savedview.owner == cvOptions.user) {
                 view.savedId = savedview.id;
@@ -366,6 +379,22 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
                 return +new Date(n.date) > +month_ago;
             });
             reststoreService.news.reverse();
+        };
+
+        reststoreService.updatesList = function () {
+            $http.get(cvOptions.backendUrl + "/updates?timestamp=" + cubesviewer.timestamp).then(
+                reststoreService._updatesListCallback, cubesService.defaultRequestErrorHandler);
+        };
+
+        reststoreService._updatesListCallback = function (data, status) {
+            reststoreService.updates = data.data;
+        };
+
+        reststoreService.getCubeUpdate = function(cube_name) {
+            var l = reststoreService.updates.filter(function(c){return c.cube === cube_name});
+            if (l.length > 0) {
+                return  l[0]['last_updated'];
+            }
         };
 
         reststoreService.initialize();

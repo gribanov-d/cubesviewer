@@ -21,6 +21,7 @@
                       <ul class="dropdown-menu cv-view-menu cv-view-menu-view">
                         <li ng-click="setMode('custom')"><a><i class="fa fa-fw"></i> Custom</a></li>
                         <div class="divider"></div>
+                        <li ng-click="setMode('auto-lastupdated')" ng-if="view.last_updated"><a><i class="fa fa-fw"></i> Last updated</a></li>
                         <li ng-click="setMode('auto-yesterday')"><a><i class="fa fa-fw"></i> Yesterday</a></li>
                         <li ng-click="setMode('auto-last7d')"><a><i class="fa fa-fw"></i> Last 7 days</a></li>
                         <li ng-click="setMode('auto-last1m')"><a><i class="fa fa-fw"></i> Last month</a></li>
