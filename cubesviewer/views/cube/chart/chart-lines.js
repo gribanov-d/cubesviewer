@@ -70,7 +70,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
 
             var view = $scope.view;
 
-            var dataRows = $scope.view.grid.data;
+            var dataRows = view.grid.data;
             var columnDefs = view.grid.columnDefs;
 
             var dRws;
@@ -79,6 +79,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
             var container = $($element).find("svg").get(0);
 
             var xAxisLabel = ( (view.params.xaxis != null) ? view.cube.dimensionParts(view.params.xaxis).label : "None");
+            var xAxisDimension = view.cube.dimensionParts(view.params.xaxis);
 
             var tooltip_aggregates = $scope.getTooltipTemplateAggregates(view);
 
@@ -101,10 +102,10 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
                     }
                 }
 
-            serie = $scope.group_x(serie, tooltip_aggregates, $scope.view.params.chart_group_x,
-                $scope.view.params.chart_group_x_method);
+                serie = $scope.group_x(serie, tooltip_aggregates, $scope.view.params.chart_group_x,
+                    $scope.view.params.chart_group_x_method);
 
-	    	var series = { "values": serie, "key": e["key"] !== "" ? e["key"] : view.params.yaxis };
+                var series = {"values": serie, "key": e["key"] !== "" ? e["key"] : view.params.yaxis};
                 if (view.params["chart-disabledseries"]) {
                     if (view.params["chart-disabledseries"]["key"] == (view.params.drilldown.join(","))) {
                         series.disabled = !!view.params["chart-disabledseries"]["disabled"][series.key];
@@ -165,14 +166,21 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
                         .axisLabel(xAxisLabel)
                         .tickFormat(function (d, i) {
                             if (columnDefs[d]) {
-                                return (columnDefs[d].name);
+                                return $scope.formatXAxisTick(columnDefs[d], xAxisDimension);
                             } else if (cDfs && cDfs[d]) {
-                                return cDfs[d].name;
+                                return $scope.formatXAxisTick(cDfs[d], xAxisDimension);
                             }
                         });
 
                     chart.yAxis.tickFormat(function (d, i) {
                         return colFormatter(d);
+                    });
+
+                    chart.tooltip.headerFormatter(function (d, i) {
+                        return $scope.formatXAxisTooltip(columnDefs[d], xAxisDimension);
+                    });
+                    chart.interactiveLayer.tooltip.headerFormatter(function (d, i) {
+                        return $scope.formatXAxisTooltip(columnDefs[d], xAxisDimension);
                     });
 
                     $scope.modify_tooltip(chart);
@@ -212,15 +220,26 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
                         chart.style(view.params["chart-stackedarea-style"]);
                     }
 
-	    	  chart.xAxis
+                    chart.xAxis
                         .axisLabel(xAxisLabel)
                         .showMaxMin(false)
                         .tickFormat(function (d, i) {
-                            return (columnDefs[d].name);
+                            if (columnDefs[d]) {
+                                return $scope.formatXAxisTick(columnDefs[d], xAxisDimension);
+                            } else if (cDfs && cDfs[d]) {
+                                return $scope.formatXAxisTick(cDfs[d], xAxisDimension);
+                            }
                         });
 
                     chart.yAxis.tickFormat(function (d, i) {
                         return colFormatter(d);
+                    });
+
+                    chart.tooltip.headerFormatter(function (d, i) {
+                        return $scope.formatXAxisTooltip(columnDefs[d], xAxisDimension);
+                    });
+                    chart.interactiveLayer.tooltip.headerFormatter(function (d, i) {
+                        return $scope.formatXAxisTooltip(columnDefs[d], xAxisDimension);
                     });
 
                     d3.select(container)
