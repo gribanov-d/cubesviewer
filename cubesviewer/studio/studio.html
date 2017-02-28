@@ -1,5 +1,7 @@
 <div class="cv-bootstrap" ng-controller="CubesViewerStudioController">
-
+    <h2 class="dashboard-title"><span class="lbl">Dashboard:</span> <span
+            ng-if="reststoreService.DASHBOARD_DEFAULT_NAME !== reststoreService.dashboard.name">{{ reststoreService.dashboard.name }}</span>
+    </h2>
     <div class="cv-gui-panel hidden-print">
 
         <div class="dropdown m-b" style="display: inline-block;" ng-if="cvOptions.is_admin">
@@ -128,6 +130,8 @@
                     <li ng-class="{disabled:reststoreService.dashboard == null}"><a ng-click="cloneDashboard()"><i
                             class="fa fa-fw fa-clone"></i> Clone</a></li>
                     <li><a ng-click="saveDashboard()"><i class="fa fa-fw fa-save"></i> Save</a></li>
+                    <div class="divider"></div>
+                    <li><a ng-click="reststoreService.closeDashboard()"><i class="fa fa-fw fa-close"></i> Close</a>
                     <div class="divider"></div>
                     <li ng-class="{disabled:reststoreService.dashboard == null}"><a
                             ng-click="reststoreService.shareDashboard()"><i class="fa fa-fw fa-share"></i>{{reststoreService.dashboard.shared

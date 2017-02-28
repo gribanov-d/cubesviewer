@@ -35,6 +35,8 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
 
         reststoreService.dashboard = null;
 
+        reststoreService.DASHBOARD_DEFAULT_NAME = 'Unsaved';
+
         reststoreService.updates = [];
 
         reststoreService.initialize = function () {
@@ -222,7 +224,8 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
                     view.last_updated = new Date(groups[1], groups[2], groups[3], groups[4], groups[5]);
                     // Month starts from 0
                     view.last_updated.setMonth(view.last_updated.getMonth() - 1);
-                } catch (e) {}
+                } catch (e) {
+                }
             }
 
             if (savedview.owner == cvOptions.user) {
@@ -243,7 +246,7 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
         reststoreService.newDashboard = function () {
             reststoreService.dashboard = {
                 'id': 0,
-                'name': 'New',
+                'name': reststoreService.DASHBOARD_DEFAULT_NAME,
                 'views': [],
                 'shared': false,
                 'is_default': false,
@@ -300,6 +303,10 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
          * Save a dashboard.
          */
         reststoreService.saveDashboard = function () {
+            if (reststoreService.dashboard.name === reststoreService.DASHBOARD_DEFAULT_NAME) {
+                dialogService.show("Rename dashboard first.");
+                return;
+            }
             $http({
                 "method": "POST",
                 "url": cvOptions.backendUrl + "/dashboard/save/",
@@ -325,6 +332,17 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
                 reststoreService.savedDashboards.push(data);
             }
             dialogService.show("Dashboard saved.");
+        };
+
+        /**
+         * Close dashboard.
+         */
+        reststoreService.closeDashboard = function () {
+            var views = studioViewsService.views.slice();
+            views.forEach(function (v) {
+                studioViewsService.closeView(v);
+            });
+            reststoreService.newDashboard();
         };
 
         /**
@@ -357,10 +375,7 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
          */
         reststoreService._deleteDashboardCallback = function (data, status) {
             reststoreService.newDashboard();
-            var views = studioViewsService.views.slice();
-            views.forEach(function (v) {
-                studioViewsService.closeView(v);
-            });
+            reststoreService.closeDashboard();
             reststoreService.dashboardList();
             dialogService.show("Dashboard deleted.");
         };
@@ -390,10 +405,12 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
             reststoreService.updates = data.data;
         };
 
-        reststoreService.getCubeUpdate = function(cube_name) {
-            var l = reststoreService.updates.filter(function(c){return c.cube === cube_name});
+        reststoreService.getCubeUpdate = function (cube_name) {
+            var l = reststoreService.updates.filter(function (c) {
+                return c.cube === cube_name
+            });
             if (l.length > 0) {
-                return  l[0]['last_updated'];
+                return l[0]['last_updated'];
             }
         };
 

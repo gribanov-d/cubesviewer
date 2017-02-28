@@ -335,7 +335,9 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('studio/studio.html',
     "<div class=\"cv-bootstrap\" ng-controller=\"CubesViewerStudioController\">\n" +
-    "\n" +
+    "    <h2 class=\"dashboard-title\"><span class=\"lbl\">Dashboard:</span> <span\n" +
+    "            ng-if=\"reststoreService.DASHBOARD_DEFAULT_NAME !== reststoreService.dashboard.name\">{{ reststoreService.dashboard.name }}</span>\n" +
+    "    </h2>\n" +
     "    <div class=\"cv-gui-panel hidden-print\">\n" +
     "\n" +
     "        <div class=\"dropdown m-b\" style=\"display: inline-block;\" ng-if=\"cvOptions.is_admin\">\n" +
@@ -464,6 +466,8 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "                    <li ng-class=\"{disabled:reststoreService.dashboard == null}\"><a ng-click=\"cloneDashboard()\"><i\n" +
     "                            class=\"fa fa-fw fa-clone\"></i> Clone</a></li>\n" +
     "                    <li><a ng-click=\"saveDashboard()\"><i class=\"fa fa-fw fa-save\"></i> Save</a></li>\n" +
+    "                    <div class=\"divider\"></div>\n" +
+    "                    <li><a ng-click=\"reststoreService.closeDashboard()\"><i class=\"fa fa-fw fa-close\"></i> Close</a>\n" +
     "                    <div class=\"divider\"></div>\n" +
     "                    <li ng-class=\"{disabled:reststoreService.dashboard == null}\"><a\n" +
     "                            ng-click=\"reststoreService.shareDashboard()\"><i class=\"fa fa-fw fa-share\"></i>{{reststoreService.dashboard.shared\n" +
