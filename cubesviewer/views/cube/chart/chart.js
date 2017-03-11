@@ -293,10 +293,11 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartController"
             if (xd.dimension.role === 'time' && colsdef.asDate) {
                 var f = d3.format('02f');
                 var year = colsdef.asDate.getFullYear(),
-                    month = f(colsdef.asDate.getMonth() + 1),
+                    month = f(colsdef.asDate.getMonth()),
                     day = f(colsdef.asDate.getDate()),
                     hour = f(colsdef.asDate.getHours()),
                     minutes = f(colsdef.asDate.getMinutes());
+                console.log('formatXAxisTick' , month);
 
                 if (xd.level.role === 'year') {
                     return year;
@@ -320,10 +321,11 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartController"
             if (xd.dimension.role === 'time' && colsdef.asDate) {
                 var f = d3.format('02f');
                 var year = colsdef.asDate.getFullYear(),
-                    month = f(colsdef.asDate.getMonth() + 1),
+                    month = f(colsdef.asDate.getMonth()),
                     day = f(colsdef.asDate.getDate()),
                     hour = f(colsdef.asDate.getHours()),
                     minutes = f(colsdef.asDate.getMinutes());
+                console.log('formatXAxisTooltip', month);
 
                 return day + '.' + month + '.' + year + ' ' + hour + ':' + minutes;
             } else {
