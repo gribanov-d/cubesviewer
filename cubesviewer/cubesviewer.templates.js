@@ -252,7 +252,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "            <div class=\"panel-body\">\n" +
     "                <div ng-repeat=\"d in drilldowns\" style=\"display: inline-block; margin-right: 1em;\">\n" +
     "                    <label>\n" +
-    "                        <input type=\"checkbox\" ng-model=\"d.selected\" />\n" +
+    "                        <input type=\"checkbox\" ng-model=\"d.selected\"/>\n" +
     "                        <span title=\"{{ d.label }}\">{{ ::d.label }}</span>\n" +
     "                    </label>\n" +
     "                </div>\n" +
@@ -263,7 +263,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "            <div class=\"panel-body\">\n" +
     "                <div ng-repeat=\"d in filters\" style=\"display: inline-block; margin-right: 1em;\">\n" +
     "                    <label>\n" +
-    "                        <input type=\"checkbox\" ng-model=\"d.selected\" />\n" +
+    "                        <input type=\"checkbox\" ng-model=\"d.selected\"/>\n" +
     "                        <span title=\"{{ d.label }}\">{{ ::d.label }}</span>\n" +
     "                    </label>\n" +
     "                </div>\n" +
@@ -274,7 +274,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "            <div class=\"panel-body\">\n" +
     "                <div ng-repeat=\"d in horizontalDimensions\" style=\"display: inline-block; margin-right: 1em;\">\n" +
     "                    <label>\n" +
-    "                        <input type=\"checkbox\" ng-model=\"d.selected\" />\n" +
+    "                        <input type=\"checkbox\" ng-model=\"d.selected\"/>\n" +
     "                        <span title=\"{{ d.label }}\">{{ ::d.label }}</span>\n" +
     "                    </label>\n" +
     "                </div>\n" +
@@ -285,7 +285,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "            <div class=\"panel-body\">\n" +
     "                <div ng-repeat=\"d in measures\" style=\"display: inline-block; margin-right: 1em;\">\n" +
     "                    <label>\n" +
-    "                        <input type=\"checkbox\" ng-model=\"d.selected\" />\n" +
+    "                        <input type=\"checkbox\" ng-model=\"d.selected\"/>\n" +
     "                        <span title=\"{{ d.label }}\">{{ ::d.label }}</span>\n" +
     "                    </label>\n" +
     "                </div>\n" +
@@ -296,7 +296,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "            <div class=\"panel-body\">\n" +
     "                <div ng-repeat=\"d in aggregates\" style=\"display: inline-block; margin-right: 1em;\">\n" +
     "                    <label>\n" +
-    "                        <input type=\"checkbox\" ng-model=\"d.selected\" />\n" +
+    "                        <input type=\"checkbox\" ng-model=\"d.selected\"/>\n" +
     "                        <span title=\"{{ d.label }}\">{{ ::d.label }}</span>\n" +
     "                    </label>\n" +
     "                </div>\n" +
@@ -307,7 +307,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "            <div class=\"panel-body\">\n" +
     "                <div ng-repeat=\"d in zAxis\" style=\"display: inline-block; margin-right: 1em;\">\n" +
     "                    <label>\n" +
-    "                        <input type=\"checkbox\" ng-model=\"d.selected\" />\n" +
+    "                        <input type=\"checkbox\" ng-model=\"d.selected\"/>\n" +
     "                        <span title=\"{{ d.label }}\">{{ ::d.label }}</span>\n" +
     "                    </label>\n" +
     "                </div>\n" +
@@ -315,11 +315,9 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "        </div>\n" +
     "        <div class=\"form-group form-inline\">\n" +
     "            <h4>Clone this view with cube</h4>\n" +
-    "            <select class=\"form-control\" ng-model=\"_cloneCube\">\n" +
-    "                <option ng-repeat=\"cube in cubesService.cubesserver._cube_list | orderBy:'label'\" value=\"{{cube.name}}\"\n" +
-    "                        ng-selected=\"cube.name == view.params.cubename\">\n" +
-    "                    {{ cube.label }}\n" +
-    "                </option>\n" +
+    "            <select class=\"form-control\" ng-model=\"_cloneCube\"\n" +
+    "                    ng-options=\"cube.name as cube.label for cube in cubesService.cubesserver._cube_list | orderBy:'label'\"\n" +
+    "                    ng-init=\"_cloneCube=view.params.cubename\">\n" +
     "            </select>\n" +
     "            <button class=\"btn btn-info\" ng-click=\"cloneWithCube(_cloneCube)\">Clone</button>\n" +
     "        </div>\n" +

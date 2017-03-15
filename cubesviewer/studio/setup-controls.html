@@ -28,7 +28,7 @@
             <div class="panel-body">
                 <div ng-repeat="d in drilldowns" style="display: inline-block; margin-right: 1em;">
                     <label>
-                        <input type="checkbox" ng-model="d.selected" />
+                        <input type="checkbox" ng-model="d.selected"/>
                         <span title="{{ d.label }}">{{ ::d.label }}</span>
                     </label>
                 </div>
@@ -39,7 +39,7 @@
             <div class="panel-body">
                 <div ng-repeat="d in filters" style="display: inline-block; margin-right: 1em;">
                     <label>
-                        <input type="checkbox" ng-model="d.selected" />
+                        <input type="checkbox" ng-model="d.selected"/>
                         <span title="{{ d.label }}">{{ ::d.label }}</span>
                     </label>
                 </div>
@@ -50,7 +50,7 @@
             <div class="panel-body">
                 <div ng-repeat="d in horizontalDimensions" style="display: inline-block; margin-right: 1em;">
                     <label>
-                        <input type="checkbox" ng-model="d.selected" />
+                        <input type="checkbox" ng-model="d.selected"/>
                         <span title="{{ d.label }}">{{ ::d.label }}</span>
                     </label>
                 </div>
@@ -61,7 +61,7 @@
             <div class="panel-body">
                 <div ng-repeat="d in measures" style="display: inline-block; margin-right: 1em;">
                     <label>
-                        <input type="checkbox" ng-model="d.selected" />
+                        <input type="checkbox" ng-model="d.selected"/>
                         <span title="{{ d.label }}">{{ ::d.label }}</span>
                     </label>
                 </div>
@@ -72,7 +72,7 @@
             <div class="panel-body">
                 <div ng-repeat="d in aggregates" style="display: inline-block; margin-right: 1em;">
                     <label>
-                        <input type="checkbox" ng-model="d.selected" />
+                        <input type="checkbox" ng-model="d.selected"/>
                         <span title="{{ d.label }}">{{ ::d.label }}</span>
                     </label>
                 </div>
@@ -83,7 +83,7 @@
             <div class="panel-body">
                 <div ng-repeat="d in zAxis" style="display: inline-block; margin-right: 1em;">
                     <label>
-                        <input type="checkbox" ng-model="d.selected" />
+                        <input type="checkbox" ng-model="d.selected"/>
                         <span title="{{ d.label }}">{{ ::d.label }}</span>
                     </label>
                 </div>
@@ -91,11 +91,9 @@
         </div>
         <div class="form-group form-inline">
             <h4>Clone this view with cube</h4>
-            <select class="form-control" ng-model="_cloneCube">
-                <option ng-repeat="cube in cubesService.cubesserver._cube_list | orderBy:'label'" value="{{cube.name}}"
-                        ng-selected="cube.name == view.params.cubename">
-                    {{ cube.label }}
-                </option>
+            <select class="form-control" ng-model="_cloneCube"
+                    ng-options="cube.name as cube.label for cube in cubesService.cubesserver._cube_list | orderBy:'label'"
+                    ng-init="_cloneCube=view.params.cubename">
             </select>
             <button class="btn btn-info" ng-click="cloneWithCube(_cloneCube)">Clone</button>
         </div>
