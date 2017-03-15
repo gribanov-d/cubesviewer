@@ -293,9 +293,13 @@ cubesviewer._seriesAddRows = function($scope, data, zaxis) {
 
 			var asDate = null;
 			if (xAxisDimension.dimension.role === 'time') {
-                asDate = new (Function.prototype.bind.apply(Date, [null].concat(colKey.split('/'))));
-				if (asDate) {
+				var date_arr = colKey.split('/');
+                asDate = new (Function.prototype.bind.apply(Date, [null].concat(date_arr)));
+				if (asDate && date_arr.length > 1) {
 					asDate.setMonth(asDate.getMonth() - 1);
+				} else if (asDate && date_arr.length < 4) {
+					// UTC timezone
+					asDate.setHours(asDate.getHours() - 3);
 				}
 			}
 
