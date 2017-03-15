@@ -294,6 +294,9 @@ cubesviewer._seriesAddRows = function($scope, data, zaxis) {
 			var asDate = null;
 			if (xAxisDimension.dimension.role === 'time') {
                 asDate = new (Function.prototype.bind.apply(Date, [null].concat(colKey.split('/'))));
+				if (asDate) {
+					asDate.setMonth(asDate.getMonth() - 1);
+				}
 			}
 
 			var col = {

@@ -293,7 +293,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartController"
             if (xd.dimension.role === 'time' && colsdef.asDate) {
                 var f = d3.format('02f');
                 var year = colsdef.asDate.getFullYear(),
-                    month = f(colsdef.asDate.getMonth()),
+                    month = f(colsdef.asDate.getMonth() + 1),
                     day = f(colsdef.asDate.getDate()),
                     hour = f(colsdef.asDate.getHours()),
                     minutes = f(colsdef.asDate.getMinutes());
@@ -320,7 +320,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartController"
             if (xd.dimension.role === 'time' && colsdef.asDate) {
                 var f = d3.format('02f');
                 var year = colsdef.asDate.getFullYear(),
-                    month = f(colsdef.asDate.getMonth()),
+                    month = f(colsdef.asDate.getMonth() + 1),
                     day = f(colsdef.asDate.getDate()),
                     hour = f(colsdef.asDate.getHours()),
                     minutes = f(colsdef.asDate.getMinutes());
