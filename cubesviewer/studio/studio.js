@@ -103,6 +103,7 @@ angular.module('cv.studio').service("studioViewsService", ['$rootScope', '$ancho
 		var compare_view = null;
 
 		var view = viewsService.createView("cube", data);
+		view.help = data.help;
 		if (data.compare_view) {
 			compare_view = viewsService.createView("cube", data.compare_view);
 			if (compare_view) {
@@ -663,6 +664,7 @@ angular.module('cv.studio').controller("CubesViewerSetupControlsController", ['$
 			var view = $.parseJSON(serializedView);
 			view.cubename = cube;
 			view.name = 'Clone of ' + view.name;
+			view.help = $scope.view.help;
 			studioViewsService.addViewObject(view);
 		};
 
