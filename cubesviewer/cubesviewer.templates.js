@@ -362,6 +362,10 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "            </button>\n" +
     "\n" +
     "            <ul class=\"dropdown-menu\">\n" +
+    "                <li ng-click=\"shareDisplay()\"><a tabindex=\"0\"><i class=\"fa fa-fw fa-code\"></i> Share...</a>\n" +
+    "                </li>\n" +
+    "\n" +
+    "                <div class=\"divider\"></div>\n" +
     "\n" +
     "                <li ng-click=\"showSerializeAdd()\"><a tabindex=\"0\"><i class=\"fa fa-fw fa-code\"></i> Add view from JSON...</a>\n" +
     "                </li>\n" +
@@ -466,7 +470,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "                    <li><a ng-click=\"saveDashboard()\"><i class=\"fa fa-fw fa-save\"></i> Save</a></li>\n" +
     "                    <div class=\"divider\"></div>\n" +
     "                    <li><a ng-click=\"reststoreService.closeDashboard()\"><i class=\"fa fa-fw fa-close\"></i> Close</a>\n" +
-    "                    <div class=\"divider\"></div>\n" +
+    "                        <div class=\"divider\"></div>\n" +
     "                    <li ng-class=\"{disabled:reststoreService.dashboard == null}\"><a\n" +
     "                            ng-click=\"reststoreService.shareDashboard()\"><i class=\"fa fa-fw fa-share\"></i>{{reststoreService.dashboard.shared\n" +
     "                        ? \"Unshare\" : \"Share\" }}</a>\n" +

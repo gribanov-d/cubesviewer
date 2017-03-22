@@ -278,8 +278,10 @@ function construct_menu(menu) {
 	return r;
 }
 
-angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootScope', '$scope', '$uibModal', '$element', '$timeout', 'cvOptions', 'cubesService', 'studioViewsService', 'viewsService', 'reststoreService',
-                                                                       function ($rootScope, $scope, $uibModal, $element, $timeout, cvOptions, cubesService, studioViewsService, viewsService, reststoreService) {
+angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootScope', '$scope', '$uibModal', '$element',
+    '$timeout', 'cvOptions', 'cubesService', 'studioViewsService', 'viewsService', 'reststoreService',
+	function ($rootScope, $scope, $uibModal, $element, $timeout, cvOptions, cubesService, studioViewsService,
+			  viewsService, reststoreService) {
 
 	$scope.cvVersion = cubesviewer.version;
 	$scope.cvOptions = cvOptions;
@@ -499,6 +501,23 @@ angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootSco
 			baseview.params.compare_view = null;
 		}
 	};
+
+    $scope.shareDisplay = function() {
+        var serialized_views = [];
+        // console.log(studioViewsService.views);
+        studioViewsService.views.forEach(function(view){
+            // console.log(viewsService.serializeView(view));
+            serialized_views.push(viewsService.serializeView(view));
+            // studioViewsService.closeView(view);
+        });
+
+        // serialized_views.forEach(function(view){
+        //     studioViewsService.addViewObject(view);
+        // });
+
+        var a = reststoreService.saveFiddle(serialized_views);
+        console.log(a);
+    };
 
     $scope.$watch('reststoreService.savedViews', function (newValue, oldValue) {
 	    if (newValue != oldValue) {

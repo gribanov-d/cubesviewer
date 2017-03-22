@@ -28,6 +28,10 @@
             </button>
 
             <ul class="dropdown-menu">
+                <li ng-click="shareDisplay()"><a tabindex="0"><i class="fa fa-fw fa-code"></i> Share...</a>
+                </li>
+
+                <div class="divider"></div>
 
                 <li ng-click="showSerializeAdd()"><a tabindex="0"><i class="fa fa-fw fa-code"></i> Add view from JSON...</a>
                 </li>
@@ -132,7 +136,7 @@
                     <li><a ng-click="saveDashboard()"><i class="fa fa-fw fa-save"></i> Save</a></li>
                     <div class="divider"></div>
                     <li><a ng-click="reststoreService.closeDashboard()"><i class="fa fa-fw fa-close"></i> Close</a>
-                    <div class="divider"></div>
+                        <div class="divider"></div>
                     <li ng-class="{disabled:reststoreService.dashboard == null}"><a
                             ng-click="reststoreService.shareDashboard()"><i class="fa fa-fw fa-share"></i>{{reststoreService.dashboard.shared
                         ? "Unshare" : "Share" }}</a>
