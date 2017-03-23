@@ -80,9 +80,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "    <button type=\"button\" ng-click=\"close();\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\"><i class=\"fa fa-fw fa-close\"></i></span></button>\n" +
     "    <h4 class=\"modal-title\" id=\"myModalLabel\"><i class=\"fa fa-question\"></i> Help</h4>\n" +
     "  </div>\n" +
-    "  <div class=\"modal-body\">\n" +
-    "    {{help}}\n" +
-    "  </div>\n" +
+    "  <div class=\"modal-body\" ng-bind-html=\"help\"></div>\n" +
     "  <div class=\"modal-footer\">\n" +
     "    <button type=\"button\" ng-click=\"close();\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n" +
     "  </div>\n"

@@ -232,14 +232,13 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
                 view.savedId = savedview.id;
                 view.owner = savedview.owner;
                 view.shared = savedview.shared;
-                view.help = savedview.help;
                 view.name = savedview.name;
             } else {
                 view.savedId = 0;
                 view.owner = cvOptions.user;
                 view.shared = false;
-                view.help = savedview.help;
             }
+            view.help = $sce.trustAsHtml(savedview.help);
 
         };
 

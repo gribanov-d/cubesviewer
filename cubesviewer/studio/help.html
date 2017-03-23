@@ -2,9 +2,7 @@
     <button type="button" ng-click="close();" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-fw fa-close"></i></span></button>
     <h4 class="modal-title" id="myModalLabel"><i class="fa fa-question"></i> Help</h4>
   </div>
-  <div class="modal-body">
-    {{help}}
-  </div>
+  <div class="modal-body" ng-bind-html="help"></div>
   <div class="modal-footer">
     <button type="button" ng-click="close();" class="btn btn-secondary" data-dismiss="modal">Close</button>
   </div>
