@@ -23,9 +23,9 @@
 
 "use strict";
 
-angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', '$cookies', 'cvOptions', 'cubesService',
-    'viewsService', 'dialogService', 'studioViewsService',
-    function ($rootScope, $http, $cookies, cvOptions, cubesService, viewsService, dialogService, studioViewsService) {
+angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', '$cookies', '$sce', 'cvOptions',
+    'cubesService', 'viewsService', 'dialogService', 'studioViewsService',
+    function ($rootScope, $http, $cookies, $sce, cvOptions, cubesService, viewsService, dialogService, studioViewsService) {
 
         var reststoreService = this;
 
@@ -391,6 +391,7 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
             // Month before.
             month_ago.setMonth(month_ago.getMonth() - 1);
             reststoreService.news = reststoreService.news.filter(function (n) {
+                n.body = $sce.trustAsHtml(n.body);
                 return +new Date(n.date) > +month_ago;
             });
             reststoreService.news.reverse();
