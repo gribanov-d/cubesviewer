@@ -504,19 +504,11 @@ angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootSco
 
     $scope.shareDisplay = function() {
         var serialized_views = [];
-        // console.log(studioViewsService.views);
         studioViewsService.views.forEach(function(view){
-            // console.log(viewsService.serializeView(view));
-            serialized_views.push(viewsService.serializeView(view));
-            // studioViewsService.closeView(view);
+            serialized_views.unshift(viewsService.serializeView(view));
         });
 
-        // serialized_views.forEach(function(view){
-        //     studioViewsService.addViewObject(view);
-        // });
-
-        var a = reststoreService.saveFiddle(serialized_views);
-        console.log(a);
+        reststoreService.saveFiddle(serialized_views);
     };
 
     $scope.$watch('reststoreService.savedViews', function (newValue, oldValue) {
