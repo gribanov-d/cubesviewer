@@ -28,11 +28,6 @@
             </button>
 
             <ul class="dropdown-menu">
-                <li ng-click="shareDisplay()"><a tabindex="0"><i class="fa fa-fw fa-code"></i> Share...</a>
-                </li>
-
-                <div class="divider"></div>
-
                 <li ng-click="showSerializeAdd()"><a tabindex="0"><i class="fa fa-fw fa-code"></i> Add view from JSON...</a>
                 </li>
 
@@ -52,6 +47,9 @@
 
                 <div class="divider"></div>
 
+                <li ng-click="shareDisplay()"><a tabindex="0"><i class="fa fa-fw fa-share-alt"></i> Share...</a></li>
+
+                <div class="divider"></div>
 
                 <!-- <li class=""><a data-toggle="modal" data-target="#cvServerInfo"><i class="fa fa-fw fa-server"></i> Data model</a></li> -->
                 <li class="" ng-class="{ 'disabled': cubesService.state != 2 }"><a data-toggle="modal"

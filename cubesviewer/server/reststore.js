@@ -432,7 +432,7 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
         reststoreService._saveFiddleCallback = function (data, status) {
             if (data.status === 200) {
                 window.location.hash = data.data.id;
-                dialogService.show("Copy and share this link: " + window.location);
+                dialogService.copy_link(window.location.toString(), "Copy and share this link");
             }
         };
 

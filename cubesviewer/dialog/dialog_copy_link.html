@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <button type="button" ng-click="close()" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true"><i class="fa fa-fw fa-close"></i></span></button>
+    <h4 class="modal-title" id="myModalLabel"><i class="fa fa-fw fa-exclamation"></i> CubesViewer</h4>
+</div>
+<div class="modal-body">
+    <p>{{dialog.text}}</p>
+    <p>
+        <div class="input-group">
+            <input class="form-control" id="foo" type="text" value="{{dialog.link}}">
+            <span class="input-group-addon" alt="Copy to clipboard" style="cursor: pointer;" ng-click="dialog.copied=true">
+                <i class="fa fa-fw fa-clipboard" ngclipboard data-clipboard-target="#foo"></i>
+            </span>
+        </div>
+    </p>
+
+    <p style="color: #666;">
+        <span ng-if="dialog.copied">Copied to clipboard</span>&nbsp;
+    </p>
+
+
+</div>
+<div class="modal-footer">
+    <!-- <button type="button" ng-click="close()" class="btn btn-secondary" data-dismiss="modal">Cancel</button>  -->
+    <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">Close</button>
+</div>
+

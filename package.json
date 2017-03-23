@@ -17,5 +17,8 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-jsdoc": "^2.0.0",
     "grunt-wiredep": "^3.0.1"
+  },
+  "dependencies": {
+    "ngclipboard": "^1.1.1"
   }
 }
