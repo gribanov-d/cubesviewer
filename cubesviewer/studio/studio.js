@@ -278,8 +278,9 @@ function construct_menu(menu) {
 	return r;
 }
 
-angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootScope', '$scope', '$uibModal', '$element', '$timeout', 'cvOptions', 'cubesService', 'studioViewsService', 'viewsService', 'reststoreService',
-                                                                       function ($rootScope, $scope, $uibModal, $element, $timeout, cvOptions, cubesService, studioViewsService, viewsService, reststoreService) {
+angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootScope', '$scope', '$uibModal', '$element',
+'$timeout', '$sce', 'cvOptions', 'cubesService', 'studioViewsService', 'viewsService', 'reststoreService',
+	function ($rootScope, $scope, $uibModal, $element, $timeout, $sce, cvOptions, cubesService, studioViewsService, viewsService, reststoreService) {
 
 	$scope.cvVersion = cubesviewer.version;
 	$scope.cvOptions = cvOptions;
@@ -293,6 +294,8 @@ angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootSco
 	$scope.sharedViews = [];
 
 	$scope.savedDashboards = [];
+
+	$scope.news = [];
 
 	$scope.initialize = function() {
 	};
@@ -532,6 +535,16 @@ angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootSco
        }
    });
 
+   $scope.$watch('reststoreService.news', function (newValue, oldValue) {
+       // First load
+       if (newValue != oldValue && newValue.length != 0) {
+           reststoreService.news.forEach(function (n) {
+           	n.body = $sce.trustAsHtml(n.body);
+           	$scope.news.push(n);
+           });
+       }
+   });
+
    $rootScope.$on("VIEW-DRAG-START", function (e, event) {
        $scope.drag_start_event = event;
    });
@@ -670,14 +683,15 @@ angular.module('cv.studio').controller("CubesViewerSetupControlsController", ['$
 
     }]);
 
-angular.module('cv.studio').controller("CubesViewerHelpController", ['$rootScope', '$scope', '$uibModalInstance', 'cvOptions', 'cubesService', 'studioViewsService', 'view',
-                                                                       function ($rootScope, $scope, $uibModalInstance, cvOptions, cubesService, studioViewsService, view) {
-	$scope.help = view.help;
+angular.module('cv.studio').controller("CubesViewerHelpController", ['$rootScope', '$scope', '$uibModalInstance', '$sce',
+    'cvOptions', 'cubesService', 'studioViewsService', 'view',
+    function ($rootScope, $scope, $uibModalInstance, $sce, cvOptions, cubesService, studioViewsService, view) {
+        $scope.help = $sce.trustAsHtml(view.help);
 
-	$scope.close = function() {
-		$uibModalInstance.dismiss('cancel');
-	};
-}]);
+        $scope.close = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }]);
 
 angular.module('cv.studio').controller("CubesViewerRenameDashboardController", ['$rootScope', '$scope', '$uibModalInstance', 'cvOptions', 'cubesService', 'studioViewsService', 'dashboard',
                                                                        function ($rootScope, $scope, $uibModalInstance, cvOptions, cubesService, studioViewsService, dashboard) {

@@ -238,7 +238,7 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
                 view.owner = cvOptions.user;
                 view.shared = false;
             }
-            view.help = $sce.trustAsHtml(savedview.help);
+            view.help = savedview.help;
 
         };
 
@@ -390,7 +390,6 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
             // Month before.
             month_ago.setMonth(month_ago.getMonth() - 1);
             reststoreService.news = reststoreService.news.filter(function (n) {
-                n.body = $sce.trustAsHtml(n.body);
                 return +new Date(n.date) > +month_ago;
             });
             reststoreService.news.reverse();

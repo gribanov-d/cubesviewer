@@ -513,7 +513,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "        </div>\n" +
     "\n" +
     "        <div class=\"row news\" ng-if=\"studioViewsService.views.length == 0\">\n" +
-    "            <div class=\"panel panel-info\" ng-repeat=\"news in reststoreService.news\">\n" +
+    "            <div class=\"panel panel-info\" ng-repeat=\"news in news\">\n" +
     "                <div class=\"panel-heading\"><h3 class=\"panel-title\">{{news.title}}</h3></div>\n" +
     "                <div class=\"panel-body\" ng-bind-html=\"news.body\"></div>\n" +
     "            </div>\n" +
