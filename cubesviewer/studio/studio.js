@@ -503,6 +503,15 @@ angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootSco
 		}
 	};
 
+    $scope.shareDisplayFiddle = function() {
+        var serialized_views = [];
+        studioViewsService.views.forEach(function(view){
+            serialized_views.unshift(viewsService.serializeView(view));
+        });
+
+        reststoreService.saveFiddle(serialized_views);
+    };
+
     $scope.$watch('reststoreService.savedViews', function (newValue, oldValue) {
 	    if (newValue != oldValue) {
            $scope.savedViews = get_hierarchy_menu(reststoreService.savedViews, function(view){

@@ -17,6 +17,37 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
   );
 
 
+  $templateCache.put('dialog/dialog_copy_link.html',
+    "<div class=\"modal-header\">\n" +
+    "    <button type=\"button\" ng-click=\"close()\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span\n" +
+    "            aria-hidden=\"true\"><i class=\"fa fa-fw fa-close\"></i></span></button>\n" +
+    "    <h4 class=\"modal-title\" id=\"myModalLabel\"><i class=\"fa fa-fw fa-exclamation\"></i> CubesViewer</h4>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "    <p>{{dialog.text}}</p>\n" +
+    "    <p>\n" +
+    "        <div class=\"input-group\">\n" +
+    "            <input class=\"form-control\" id=\"foo\" type=\"text\" value=\"{{dialog.link}}\">\n" +
+    "            <span class=\"input-group-addon\" alt=\"Copy to clipboard\" style=\"cursor: pointer;\" ng-click=\"dialog.copied=true\">\n" +
+    "                <i class=\"fa fa-fw fa-clipboard\" ngclipboard data-clipboard-target=\"#foo\"></i>\n" +
+    "            </span>\n" +
+    "        </div>\n" +
+    "    </p>\n" +
+    "\n" +
+    "    <p style=\"color: #666;\">\n" +
+    "        <span ng-if=\"dialog.copied\">Copied to clipboard</span>&nbsp;\n" +
+    "    </p>\n" +
+    "\n" +
+    "\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "    <!-- <button type=\"button\" ng-click=\"close()\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Cancel</button>  -->\n" +
+    "    <button type=\"button\" ng-click=\"close()\" class=\"btn btn-primary\" data-dismiss=\"modal\">Close</button>\n" +
+    "</div>\n" +
+    "\n"
+  );
+
+
   $templateCache.put('studio/about.html',
     "<div class=\"modal fade\" id=\"cvAboutModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"\">\n" +
     "  <div class=\"modal-dialog\" role=\"document\">\n" +
@@ -360,7 +391,6 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "            </button>\n" +
     "\n" +
     "            <ul class=\"dropdown-menu\">\n" +
-    "\n" +
     "                <li ng-click=\"showSerializeAdd()\"><a tabindex=\"0\"><i class=\"fa fa-fw fa-code\"></i> Add view from JSON...</a>\n" +
     "                </li>\n" +
     "\n" +
@@ -380,6 +410,9 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "\n" +
     "                <div class=\"divider\"></div>\n" +
     "\n" +
+    "                <li ng-click=\"shareDisplayFiddle()\"><a tabindex=\"0\"><i class=\"fa fa-fw fa-share-alt\"></i> Share...</a></li>\n" +
+    "\n" +
+    "                <div class=\"divider\"></div>\n" +
     "\n" +
     "                <!-- <li class=\"\"><a data-toggle=\"modal\" data-target=\"#cvServerInfo\"><i class=\"fa fa-fw fa-server\"></i> Data model</a></li> -->\n" +
     "                <li class=\"\" ng-class=\"{ 'disabled': cubesService.state != 2 }\"><a data-toggle=\"modal\"\n" +
@@ -464,7 +497,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "                    <li><a ng-click=\"saveDashboard()\"><i class=\"fa fa-fw fa-save\"></i> Save</a></li>\n" +
     "                    <div class=\"divider\"></div>\n" +
     "                    <li><a ng-click=\"reststoreService.closeDashboard()\"><i class=\"fa fa-fw fa-close\"></i> Close</a>\n" +
-    "                    <div class=\"divider\"></div>\n" +
+    "                        <div class=\"divider\"></div>\n" +
     "                    <li ng-class=\"{disabled:reststoreService.dashboard == null}\"><a\n" +
     "                            ng-click=\"reststoreService.shareDashboard()\"><i class=\"fa fa-fw fa-share\"></i>{{reststoreService.dashboard.shared\n" +
     "                        ? \"Unshare\" : \"Share\" }}</a>\n" +

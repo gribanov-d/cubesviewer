@@ -41,10 +41,7 @@ angular.module('cv.views').service("dialogService", ['$rootScope', '$uibModal', 
 	    	appendTo: angular.element($("body").find('.cv-modals')[0]),
 		    resolve: {
 	    		dialog: function() { return { 'text': text }; }
-		    },
-	    	/*
-		    size: size,
-	    	 */
+		    }
 	    });
 
 	    modalInstance.result.then(function (selectedItem) {
@@ -54,6 +51,23 @@ angular.module('cv.views').service("dialogService", ['$rootScope', '$uibModal', 
 	    });
 
 	};
+
+    dialogService.copy_link = function (link, text) {
+
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'dialog/dialog_copy_link.html',
+            controller: 'CubesViewerViewsDialogController',
+            appendTo: angular.element($("body").find('.cv-modals')[0]),
+            resolve: {
+                dialog: function () {
+                    return {'link': link, 'text': text, 'copied': false};
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {}, function () {});
+    };
 
 	this.initialize();
 

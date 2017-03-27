@@ -45,6 +45,11 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
             reststoreService.newDashboard();
             reststoreService.newsList();
             reststoreService.updatesList();
+
+            var hash = window.location.hash.substring(2);
+            if (hash.length > 0) {
+                reststoreService.getFiddle(hash);
+            }
         };
 
         /**
@@ -150,14 +155,14 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
 
         };
 
-        /*
+        /**
          * Delete callback
          */
         reststoreService._viewDeleteCallback = function () {
             reststoreService.viewList();
         };
 
-        /*
+        /**
          * Get view list.
          */
         reststoreService.viewList = function () {
@@ -410,6 +415,39 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
             });
             if (l.length > 0) {
                 return l[0]['last_updated'];
+            }
+        };
+
+        reststoreService.saveFiddle = function (serialized_views) {
+            $http({
+                "method": "POST",
+                "url": cvOptions.backendUrl + "/fiddle/save",
+                "data": serialized_views,
+                "headers": {"X-CSRFToken": $cookies.get('csrftoken')}
+            }).then(reststoreService._saveFiddleCallback, cubesService.defaultRequestErrorHandler);
+        };
+
+        reststoreService._saveFiddleCallback = function (data, status) {
+            if (data.status === 200) {
+                window.location.hash = data.data.id;
+                dialogService.copy_link(window.location.toString(), "Copy and share this link");
+            }
+        };
+
+        reststoreService.getFiddle = function (hash) {
+            return $http({
+                "method": "GET",
+                "url": cvOptions.backendUrl + "/fiddle/get/" + hash,
+                "headers": {"X-CSRFToken": $cookies.get('csrftoken')}
+            }).then(reststoreService._getFiddleCallback, cubesService.defaultRequestErrorHandler);
+        };
+
+        reststoreService._getFiddleCallback = function (data, status) {
+            if (data.status === 200) {
+                var serialized_views = data.data;
+                serialized_views.forEach(function (view) {
+                    studioViewsService.addViewObject(view);
+                });
             }
         };
 
