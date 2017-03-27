@@ -47,7 +47,8 @@
 
                 <div class="divider"></div>
 
-                <li ng-click="shareDisplayFiddle()"><a tabindex="0"><i class="fa fa-fw fa-share-alt"></i> Share...</a></li>
+                <li ng-click="shareDisplayFiddle()" ng-class="{ 'disabled': studioViewsService.views.length == 0 }"><a
+                        tabindex="0"><i class="fa fa-fw fa-share-alt"></i> Share...</a></li>
 
                 <div class="divider"></div>
 

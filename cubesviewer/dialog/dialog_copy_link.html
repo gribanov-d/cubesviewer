@@ -6,12 +6,14 @@
 <div class="modal-body">
     <p>{{dialog.text}}</p>
     <p>
-        <div class="input-group">
-            <input class="form-control" id="foo" type="text" value="{{dialog.link}}">
-            <span class="input-group-addon" alt="Copy to clipboard" style="cursor: pointer;" ng-click="dialog.copied=true">
-                <i class="fa fa-fw fa-clipboard" ngclipboard data-clipboard-target="#foo"></i>
+    <div class="input-group">
+        <input class="form-control" id="foo" type="text" value="{{dialog.link}}">
+        <span class="input-group-addon" alt="Copy to clipboard" style="cursor: pointer;"
+              ng-click="dialog.copied=true"
+              ngclipboard data-clipboard-target="#foo">
+                <i class="fa fa-fw fa-clipboard"></i>
             </span>
-        </div>
+    </div>
     </p>
 
     <p style="color: #666;">

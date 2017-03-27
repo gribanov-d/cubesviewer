@@ -26,12 +26,14 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "<div class=\"modal-body\">\n" +
     "    <p>{{dialog.text}}</p>\n" +
     "    <p>\n" +
-    "        <div class=\"input-group\">\n" +
-    "            <input class=\"form-control\" id=\"foo\" type=\"text\" value=\"{{dialog.link}}\">\n" +
-    "            <span class=\"input-group-addon\" alt=\"Copy to clipboard\" style=\"cursor: pointer;\" ng-click=\"dialog.copied=true\">\n" +
-    "                <i class=\"fa fa-fw fa-clipboard\" ngclipboard data-clipboard-target=\"#foo\"></i>\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <input class=\"form-control\" id=\"foo\" type=\"text\" value=\"{{dialog.link}}\">\n" +
+    "        <span class=\"input-group-addon\" alt=\"Copy to clipboard\" style=\"cursor: pointer;\"\n" +
+    "              ng-click=\"dialog.copied=true\"\n" +
+    "              ngclipboard data-clipboard-target=\"#foo\">\n" +
+    "                <i class=\"fa fa-fw fa-clipboard\"></i>\n" +
     "            </span>\n" +
-    "        </div>\n" +
+    "    </div>\n" +
     "    </p>\n" +
     "\n" +
     "    <p style=\"color: #666;\">\n" +
@@ -410,7 +412,8 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "\n" +
     "                <div class=\"divider\"></div>\n" +
     "\n" +
-    "                <li ng-click=\"shareDisplayFiddle()\"><a tabindex=\"0\"><i class=\"fa fa-fw fa-share-alt\"></i> Share...</a></li>\n" +
+    "                <li ng-click=\"shareDisplayFiddle()\" ng-class=\"{ 'disabled': studioViewsService.views.length == 0 }\"><a\n" +
+    "                        tabindex=\"0\"><i class=\"fa fa-fw fa-share-alt\"></i> Share...</a></li>\n" +
     "\n" +
     "                <div class=\"divider\"></div>\n" +
     "\n" +
