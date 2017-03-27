@@ -21,7 +21,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "<div class=\"modal-header\">\n" +
     "    <button type=\"button\" ng-click=\"close()\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span\n" +
     "            aria-hidden=\"true\"><i class=\"fa fa-fw fa-close\"></i></span></button>\n" +
-    "    <h4 class=\"modal-title\" id=\"myModalLabel\"><i class=\"fa fa-fw fa-exclamation\"></i> CubesViewer</h4>\n" +
+    "    <h4 class=\"modal-title\" id=\"myModalLabel\"><i class=\"fa fa-fw fa-share-alt\"></i> Share...</h4>\n" +
     "</div>\n" +
     "<div class=\"modal-body\">\n" +
     "    <p>{{dialog.text}}</p>\n" +
