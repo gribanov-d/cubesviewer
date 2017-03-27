@@ -47,11 +47,6 @@
 
                 <div class="divider"></div>
 
-                <li ng-click="shareDisplayFiddle()" ng-class="{ 'disabled': studioViewsService.views.length == 0 }"><a
-                        tabindex="0"><i class="fa fa-fw fa-share-alt"></i> Share...</a></li>
-
-                <div class="divider"></div>
-
                 <!-- <li class=""><a data-toggle="modal" data-target="#cvServerInfo"><i class="fa fa-fw fa-server"></i> Data model</a></li> -->
                 <li class="" ng-class="{ 'disabled': cubesService.state != 2 }"><a data-toggle="modal"
                                                                                    data-target="#cvServerInfo"><i
@@ -161,6 +156,12 @@
                         ng-disabled="studioViewsService.views.length == 0"
                         ng-class="cvOptions.hideControls ? 'btn-active btn-success' : 'btn-primary'"
                         ng-click="toggleHideControls()"><i class="fa fa-fw fa-unlock-alt"></i></button>
+            </div>
+            <div class="form-group" style="display: inline-block; margin-bottom: 0; margin-left: 10px;">
+                <button class="btn" type="button" title="Share"
+                        ng-disabled="studioViewsService.views.length == 0"
+                        ng-class="studioViewsService.views.length == 0 ? '' : 'btn-primary'"
+                        ng-click="shareDisplayFiddle()"><i class="fa fa-fw fa-share-alt"></i></button>
             </div>
 
         </div>

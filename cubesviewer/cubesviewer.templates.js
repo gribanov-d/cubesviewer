@@ -412,11 +412,6 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "\n" +
     "                <div class=\"divider\"></div>\n" +
     "\n" +
-    "                <li ng-click=\"shareDisplayFiddle()\" ng-class=\"{ 'disabled': studioViewsService.views.length == 0 }\"><a\n" +
-    "                        tabindex=\"0\"><i class=\"fa fa-fw fa-share-alt\"></i> Share...</a></li>\n" +
-    "\n" +
-    "                <div class=\"divider\"></div>\n" +
-    "\n" +
     "                <!-- <li class=\"\"><a data-toggle=\"modal\" data-target=\"#cvServerInfo\"><i class=\"fa fa-fw fa-server\"></i> Data model</a></li> -->\n" +
     "                <li class=\"\" ng-class=\"{ 'disabled': cubesService.state != 2 }\"><a data-toggle=\"modal\"\n" +
     "                                                                                   data-target=\"#cvServerInfo\"><i\n" +
@@ -526,6 +521,12 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "                        ng-disabled=\"studioViewsService.views.length == 0\"\n" +
     "                        ng-class=\"cvOptions.hideControls ? 'btn-active btn-success' : 'btn-primary'\"\n" +
     "                        ng-click=\"toggleHideControls()\"><i class=\"fa fa-fw fa-unlock-alt\"></i></button>\n" +
+    "            </div>\n" +
+    "            <div class=\"form-group\" style=\"display: inline-block; margin-bottom: 0; margin-left: 10px;\">\n" +
+    "                <button class=\"btn\" type=\"button\" title=\"Share\"\n" +
+    "                        ng-disabled=\"studioViewsService.views.length == 0\"\n" +
+    "                        ng-class=\"studioViewsService.views.length == 0 ? '' : 'btn-primary'\"\n" +
+    "                        ng-click=\"shareDisplayFiddle()\"><i class=\"fa fa-fw fa-share-alt\"></i></button>\n" +
     "            </div>\n" +
     "\n" +
     "        </div>\n" +
