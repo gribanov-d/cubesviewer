@@ -99,9 +99,9 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesPlanCo
                 d.push(series);
                 serieCount++;
             });
-            d.sort(function (a, b) {
-                return a.key < b.key ? -1 : (a.key > b.key ? +1 : 0)
-            });
+
+            $scope.sortSeries(d);
+
             d.push({
                 "key": "Plan",
                 "values": plan_data,

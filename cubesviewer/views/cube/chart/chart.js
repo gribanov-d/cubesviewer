@@ -331,6 +331,21 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartController"
             }
         };
 
+        $scope.sortSeries = function (seriesArr) {
+            seriesArr.sort(function (a, b) {
+                var a_key = parseFloat(a.key);
+                var b_key = parseFloat(b.key);
+                if (Number.isNaN(a_key) || Number.isNaN(b_key)) {
+                    a_key = a.key;
+                    b_key = b.key;
+                }
+
+                return a_key < b_key ? -1 : (a_key > b_key ? +1 : 0)
+            });
+
+            return seriesArr;
+        };
+
         $scope.$watch('view.params.chartoptions.showLegend', function (newValue, oldValue) {
             if (!newValue) {
                 var legend = $($element).find('.nv-legendWrap');

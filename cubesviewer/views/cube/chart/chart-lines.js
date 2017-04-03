@@ -144,9 +144,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
                     serieCount++;
                 });
             }
-            d.sort(function (a, b) {
-                return a.key < b.key ? -1 : (a.key > b.key ? +1 : 0)
-            });
+            $scope.sortSeries(d);
 
             var ag = $.grep(view.cube.aggregates, function (ag) {
                 return ag.ref == view.params.yaxis
