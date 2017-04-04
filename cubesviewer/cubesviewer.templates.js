@@ -831,7 +831,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "        <a tabindex=\"0\"><i class=\"fa fa-fw fa-bars\"></i> Dimension filter</a>\n" +
     "        <ul class=\"dropdown-menu\">\n" +
     "\n" +
-    "          <li on-repeat-done ng-repeat-start=\"dimension in view.getEnabledFilters()\" ng-if=\"dimension.levels.length == 1 && !dimension.isRangeFilter()\" ng-click=\"showDimensionFilter(dimension.name);\">\n" +
+    "          <li on-repeat-done ng-repeat-start=\"dimension in view.getEnabledFilters()\" ng-if=\"dimension.levels.length == 1\" ng-click=\"showDimensionFilter(dimension.name);\">\n" +
     "            <a href=\"\">{{ dimension.label }}</a>\n" +
     "          </li>\n" +
     "          <li ng-repeat-end ng-if=\"dimension.levels.length != 1\" class=\"dropdown-submenu\">\n" +

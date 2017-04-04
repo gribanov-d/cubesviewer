@@ -11,7 +11,7 @@
         <a tabindex="0"><i class="fa fa-fw fa-bars"></i> Dimension filter</a>
         <ul class="dropdown-menu">
 
-          <li on-repeat-done ng-repeat-start="dimension in view.getEnabledFilters()" ng-if="dimension.levels.length == 1 && !dimension.isRangeFilter()" ng-click="showDimensionFilter(dimension.name);">
+          <li on-repeat-done ng-repeat-start="dimension in view.getEnabledFilters()" ng-if="dimension.levels.length == 1" ng-click="showDimensionFilter(dimension.name);">
             <a href="">{{ dimension.label }}</a>
           </li>
           <li ng-repeat-end ng-if="dimension.levels.length != 1" class="dropdown-submenu">
