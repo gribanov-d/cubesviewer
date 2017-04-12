@@ -20,5 +20,15 @@
   },
   "dependencies": {
     "ngclipboard": "^1.1.1"
+  },
+  "scripts": {
+    "grunt": "grunt"
+  },
+  "jshintConfig": {
+    "globals": {
+      "angular": false,
+      "$": false,
+      "cubesviewer": false
+    }
   }
 }

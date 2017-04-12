@@ -10,8 +10,6 @@
 build
 eggs
 parts
-bin
-var
 sdist
 develop-eggs
 .installed.cfg
@@ -47,11 +45,10 @@ nosetests.xml
 #/virtualenv
 /env
 
-*.log
 *.pyc
 local_settings.py
 .idea
 *.DS_Store
 
 
-/dist
+dist

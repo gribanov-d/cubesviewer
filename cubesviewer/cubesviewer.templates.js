@@ -1137,7 +1137,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "        </ul>\n" +
     "    </li>\n" +
     "\n" +
-    "    <li ng-show=\"view.params.mode == 'chart'\"\n" +
+    "    <li ng-show=\"view.params.mode == 'chart' || view.params.mode == 'series'\"\n" +
     "        class=\"dropdown-submenu\">\n" +
     "        <a tabindex=\"0\"><i class=\"fa fa-fw fa-forward\"></i> Group X</a>\n" +
     "        <ul class=\"dropdown-menu\">\n" +
