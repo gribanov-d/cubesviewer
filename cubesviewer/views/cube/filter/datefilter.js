@@ -35,84 +35,113 @@
 "use strict";
 
 angular.module('cv.views.cube').filter("datefilterMode", ['$rootScope', 'cvOptions',
-                                                          function ($rootScope, cvOptions) {
-	return function(val) {
-		var text = "None";
-		switch (val) {
-			case "custom": text = "Custom"; break;
-			case "auto-lastupdated": text = "Last updated"; break;
-			case "auto-yesterday": text = "Yesterday"; break;
-			case "auto-last7d": text = "Last 7 days"; break;
-			case "auto-last1m": text = "Last month"; break;
-			case "auto-last3m": text = "Last 3 months"; break;
-			case "auto-last6m": text = "Last 6 months"; break;
-			case "auto-last12m": text = "Last year"; break;
-			case "auto-last24m": text = "Last 2 years"; break;
-			case "auto-january1st": text = "From January 1st"; break;
-		}
-		return text;
-	};
-}]);
+    function ($rootScope, cvOptions) {
+        return function (val) {
+            var text = "None";
+            switch (val) {
+                case "custom":
+                    text = "Custom";
+                    break;
+                case "auto-lastupdated":
+                    text = "Last updated";
+                    break;
+                case "auto-yesterday":
+                    text = "Yesterday";
+                    break;
+                case "auto-last7d":
+                    text = "Last 7 days";
+                    break;
+                case "auto-last1m":
+                    text = "Last month";
+                    break;
+                case "auto-last3m":
+                    text = "Last 3 months";
+                    break;
+                case "auto-last6m":
+                    text = "Last 6 months";
+                    break;
+                case "auto-last12m":
+                    text = "Last year";
+                    break;
+                case "auto-last24m":
+                    text = "Last 2 years";
+                    break;
+                case "auto-january1st":
+                    text = "From January 1st";
+                    break;
+            }
+            return text;
+        };
+    }]);
 
-angular.module('cv.views.cube').controller("CubesViewerViewsCubeFilterDateController", ['$rootScope', '$scope', '$filter', 'cvOptions', 'cubesService', 'viewsService',
-                                                                                        function ($rootScope, $scope, $filter, cvOptions, cubesService, viewsService) {
-	$scope.initialize = function() {
-		$scope.dateStart.value = $scope.datefilter.date_from ? new Date($scope.datefilter.date_from) : null;
-		$scope.dateEnd.value = $scope.datefilter.date_to ? new Date($scope.datefilter.date_to) : null;
-	};
+angular.module('cv.views.cube').controller("CubesViewerViewsCubeFilterDateController", ['$rootScope', '$scope',
+    '$filter', 'cvOptions', 'cubesService', 'viewsService',
+    function ($rootScope, $scope, $filter, cvOptions, cubesService, viewsService) {
+        $scope.initialize = function () {
+            $scope.dateStart.value = $scope.datefilter.date_from ? new Date($scope.datefilter.date_from) : null;
+            $scope.dateEnd.value = $scope.datefilter.date_to ? new Date($scope.datefilter.date_to) : null;
+        };
 
-	$scope.dateStart = {
-		opened: false,
-		value: null,
-		options: {
-			//dateDisabled: disabled,
-	    	formatYear: 'yyyy',
-	    	//maxDate: new Date(2020, 12, 31),
-	    	//minDate: new Date(1970, 1, 1),
-	    	startingDay: cvOptions.datepickerFirstDay,
-	    	showWeeks: cvOptions.datepickerShowWeeks
-	    }
-	};
-	$scope.dateEnd = {
-		opened: false,
-		value: null,
-		options: {
-			//dateDisabled: disabled,
-	    	formatYear: 'yyyy',
-	    	//maxDate: new Date(2020, 12, 31),
-	    	//minDate: new Date(1970, 1, 1),
-	    	startingDay: cvOptions.datepickerFirstDay,
-	    	showWeeks: cvOptions.datepickerShowWeeks
-	    }
-	};
+        $scope.dateStart = {
+            opened: false,
+            value: null,
+            options: {
+                //dateDisabled: disabled,
+                formatYear: 'yyyy',
+                //maxDate: new Date(2020, 12, 31),
+                //minDate: new Date(1970, 1, 1),
+                startingDay: cvOptions.datepickerFirstDay,
+                showWeeks: cvOptions.datepickerShowWeeks
+            }
+        };
+        $scope.dateEnd = {
+            opened: false,
+            value: null,
+            options: {
+                //dateDisabled: disabled,
+                formatYear: 'yyyy',
+                //maxDate: new Date(2020, 12, 31),
+                //minDate: new Date(1970, 1, 1),
+                startingDay: cvOptions.datepickerFirstDay,
+                showWeeks: cvOptions.datepickerShowWeeks
+            }
+        };
 
-	$scope.dateStartOpen = function() {
-		$scope.dateStart.opened = true;
-	};
-	$scope.dateEndOpen = function() {
-		$scope.dateEnd.opened = true;
-	};
+        $scope.dateStartOpen = function () {
+            $scope.dateStart.opened = true;
+        };
+        $scope.dateEndOpen = function () {
+            $scope.dateEnd.opened = true;
+        };
 
-	$scope.setMode = function(mode) {
-		$scope.datefilter.mode = mode;
-	};
+        $scope.setMode = function (mode) {
+            $scope.datefilter.mode = mode;
+        };
 
-	$scope.updateDateFilter = function() {
-		$scope.datefilter.date_from = $scope.dateStart.value ? $filter('date')($scope.dateStart.value, "yyyy-MM-dd") : null;
-		$scope.datefilter.date_to = $scope.dateEnd.value? $filter('date')($scope.dateEnd.value, "yyyy-MM-dd") : null;
-		$scope.view.pendingActions++;
-		// $scope.refreshView();
-	};
+        $scope.updateDateFilter = function () {
+            $scope.datefilter.date_from = $scope.dateStart.value ? $filter('date')($scope.dateStart.value, "yyyy-MM-dd") : null;
+            $scope.datefilter.date_to = $scope.dateEnd.value ? $filter('date')($scope.dateEnd.value, "yyyy-MM-dd") : null;
+            var to_date = $scope.datefilter.date_to ? new Date($scope.datefilter.date_to) : null;
+            if (to_date !== null) {
+                to_date.setDate(to_date.getDate() + 1);
+                $scope.datefilter.date_to = $filter('date')(to_date, "yyyy-MM-dd");
+            }
+            $scope.view.pendingActions++;
+            // $scope.refreshView();
+        };
 
-	$scope.$watch("dateStart.value", function(newValue, oldValue) {
-		if (newValue != oldValue) $scope.updateDateFilter()});
-	$scope.$watch("dateEnd.value", function(newValue, oldValue) {
-		if (newValue != oldValue) $scope.updateDateFilter()});
-	$scope.$watch("datefilter.mode", function(newValue, oldValue) {
-		if (newValue != oldValue) $scope.updateDateFilter()});
+        $scope.$watch("dateStart.value", function (newValue, oldValue) {
+            if (newValue != oldValue) $scope.updateDateFilter();
+        });
+        $scope.$watch("dateEnd.value", function (newValue, oldValue) {
+            if (newValue != oldValue) $scope.updateDateFilter();
+        });
+        $scope.$watch("datefilter.mode", function (newValue, oldValue) {
+            if (newValue != oldValue) $scope.updateDateFilter();
+        });
 
-	$scope.initialize();
+        $scope.initialize();
 
-}]);
+    }]);
 
 
