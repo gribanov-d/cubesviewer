@@ -51,4 +51,4 @@ local_settings.py
 *.DS_Store
 
 
-dist
+/dist
