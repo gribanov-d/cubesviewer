@@ -166,7 +166,7 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
          * Get view list.
          */
         reststoreService.viewList = function () {
-            $http.get(cvOptions.backendUrl + "/view/list/?timestamp=" + cubesviewer.timestamp).then(
+            reststoreService.get_no_cache(cvOptions.backendUrl + "/view/list/").then(
                 reststoreService._viewListCallback, cubesService.defaultRequestErrorHandler);
         };
 
@@ -295,7 +295,7 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
         };
 
         reststoreService.dashboardList = function () {
-            $http.get(cvOptions.backendUrl + "/dashboard/list/?timestamp=" + cubesviewer.timestamp).then(
+            reststoreService.get_no_cache(cvOptions.backendUrl + "/dashboard/list/").then(
                 reststoreService._dashboardListCallback, cubesService.defaultRequestErrorHandler);
         };
 
@@ -385,7 +385,7 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
         };
 
         reststoreService.newsList = function () {
-            $http.get(cvOptions.backendUrl + "/news?timestamp=" + cubesviewer.timestamp).then(
+            reststoreService.get_no_cache(cvOptions.backendUrl + "/news").then(
                 reststoreService._newsListCallback, cubesService.defaultRequestErrorHandler);
         };
 
@@ -401,7 +401,7 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
         };
 
         reststoreService.updatesList = function () {
-            $http.get(cvOptions.backendUrl + "/updates?timestamp=" + cubesviewer.timestamp).then(
+            reststoreService.get_no_cache(cvOptions.backendUrl + "/updates").then(
                 reststoreService._updatesListCallback, cubesService.defaultRequestErrorHandler);
         };
 
@@ -449,6 +449,16 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
                     studioViewsService.addViewObject(view);
                 });
             }
+        };
+
+        reststoreService.get_no_cache = function (url) {
+            return $http.get(url, {
+                headers: {
+                    "Pragma": "no-cache",
+                    "Expires": -1,
+                    "Cache-Control": "no-cache"
+                }
+            });
         };
 
         reststoreService.initialize();

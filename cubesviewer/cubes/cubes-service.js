@@ -104,7 +104,6 @@ angular.module('cv.cubes').service("cubesService", ['$rootScope', '$log', 'cvOpt
 	 */
 	this.cubesRequest = function(path, params, successCallback, errCallback) {
 
-		params.timestamp = cubesviewer.timestamp;
 
 		// TODO: normalize how URLs are used (full URL shall come from client code)
 		if (path.charAt(0) == '/') path = cvOptions.cubesUrl + path;
@@ -113,7 +112,15 @@ angular.module('cv.cubes').service("cubesService", ['$rootScope', '$log', 'cvOpt
 			$log.debug("Cubes request: " + path + " (" + JSON.stringify(params) + ")");
 		}
 
-		var jqxhr = $.get(path, params, cubesService._cubesRequestCallback(successCallback), cvOptions.jsonRequestType);
+        var jqxhr = $.get({
+            'url': path,
+            'data': params,
+            'headers': {
+                "Cache-Control": "public, max-age=43200"
+            },
+            'success': cubesService._cubesRequestCallback(successCallback),
+            'dataType': cvOptions.jsonRequestType
+        });
 
 		jqxhr.fail(errCallback || cubesService.defaultRequestErrorHandler);
 

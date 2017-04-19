@@ -119,8 +119,6 @@
         if(args && args.drilldown)
           params.data.drilldown = params.data.drilldown.toString();
 
-        params.data.timestamp = cubesviewer.timestamp;
-
         params.success = function(obj) {
             callback(obj);
         };
@@ -153,8 +151,6 @@
 
         options.url = self.url + 'info';
 
-        options.data = {'timestamp': cubesviewer.timestamp};
-
         options.success = function(resp, status, xhr) {
             self.server_version = resp.cubes_version;
             self.cubes_version = resp.cubes_version;
@@ -183,8 +179,6 @@
         var options = {dataType : 'json', type : "GET"};
 
         options.url = self.url + 'cubes';
-
-        options.data = {'timestamp': cubesviewer.timestamp};
 
         options.success = function(resp, status, xhr) {
             self._cube_list = resp;
@@ -220,8 +214,6 @@
         var options = {dataType : 'json', type : "GET"};
 
         options.url = self.url + 'cube/' + encodeURI(name) + '/model';
-
-        options.data = {'timestamp': cubesviewer.timestamp};
 
         options.success = function(resp, status, xhr) {
             // must parse dimensions first into a "fake" model

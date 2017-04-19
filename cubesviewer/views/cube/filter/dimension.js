@@ -110,9 +110,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeFilterDimensionC
 				params["cut"] = buildQueryCutsStrings.join(cubes.CUT_STRING_SEPARATOR_CHAR);
 			}
 
-		}
-
-		params.timestamp = cubesviewer.timestamp;
+		};
 
 		var path = "/cube/" + $scope.view.cube.name + "/members/" + $scope.parts.dimension.name;
 		var dataId = path + "?" + $.param(params);
