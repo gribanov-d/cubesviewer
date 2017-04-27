@@ -358,6 +358,7 @@ angular.module('cv.cubes').service("cubesService", ['$rootScope', '$log', 'cvOpt
 				datefiltervalue = datefiltervalue + cubesService._datefiltercell(view, datefilter, date_from);
 			datefiltervalue = datefiltervalue + "-";
 			if (date_to != null)
+                date_to.setDate(date_to.getDate() + 1);
 				datefiltervalue = datefiltervalue + cubesService._datefiltercell(view, datefilter, date_to);
 			return datefiltervalue;
 		} else {

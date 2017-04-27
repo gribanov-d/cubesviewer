@@ -121,11 +121,6 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeFilterDateContro
         $scope.updateDateFilter = function () {
             $scope.datefilter.date_from = $scope.dateStart.value ? $filter('date')($scope.dateStart.value, "yyyy-MM-dd") : null;
             $scope.datefilter.date_to = $scope.dateEnd.value ? $filter('date')($scope.dateEnd.value, "yyyy-MM-dd") : null;
-            var to_date = $scope.datefilter.date_to ? new Date($scope.datefilter.date_to) : null;
-            if (to_date !== null) {
-                to_date.setDate(to_date.getDate() + 1);
-                $scope.datefilter.date_to = $filter('date')(to_date, "yyyy-MM-dd");
-            }
             $scope.view.pendingActions++;
             // $scope.refreshView();
         };
