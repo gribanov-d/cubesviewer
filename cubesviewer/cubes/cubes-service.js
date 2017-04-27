@@ -357,9 +357,10 @@ angular.module('cv.cubes').service("cubesService", ['$rootScope', '$log', 'cvOpt
 			if (date_from != null)
 				datefiltervalue = datefiltervalue + cubesService._datefiltercell(view, datefilter, date_from);
 			datefiltervalue = datefiltervalue + "-";
-			if (date_to != null)
+			if (date_to != null) {
                 date_to.setDate(date_to.getDate() + 1);
-				datefiltervalue = datefiltervalue + cubesService._datefiltercell(view, datefilter, date_to);
+                datefiltervalue = datefiltervalue + cubesService._datefiltercell(view, datefilter, date_to);
+            }
 			return datefiltervalue;
 		} else {
 			return null;
@@ -406,7 +407,7 @@ angular.module('cv.cubes').service("cubesService", ['$rootScope', '$log', 'cvOpt
 	    var yearStart = new Date(d.getFullYear(),0,1);
 	    // Calculate full weeks to nearest Thursday
 	    var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7)
-	    // Return array of year and week number
+        // Return array of year and week number
 	    return weekNo;
 	};
 
