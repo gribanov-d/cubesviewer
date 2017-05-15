@@ -363,15 +363,16 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartController"
 
         this.initialize();
 
+        var tooltip_replaces_regex = /(?:%([\w-]+)%)/g;
+
         function get_tooltip_replaces(template) {
             var tooltip_replaces = [];
-            const regex = /(?:%([\w-]+)%)/g;
             var m;
 
-            while ((m = regex.exec(template)) !== null) {
+            while ((m = tooltip_replaces_regex.exec(template)) !== null) {
                 // This is necessary to avoid infinite loops with zero-width matches
-                if (m.index === regex.lastIndex) {
-                    regex.lastIndex++;
+                if (m.index === tooltip_replaces_regex.lastIndex) {
+                    tooltip_replaces_regex.lastIndex++;
                 }
                 m.forEach(function (match, groupIndex) {
                     if (groupIndex === 1) {
