@@ -923,21 +923,21 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "    <div class=\"divider\"></div>\n" +
     "    <li ng-click=\"viewsService.studioViewsService.studioScope.showHelpView(view)\"><a><i\n" +
     "            class=\"fa fa-fw fa-question\"></i> Help</a></li>\n" +
-    "\n" +
-    "    <div class=\"divider\"\n" +
-    "         ng-if=\"view.params.mode == 'chart' && (view.params.charttype == 'lines' || view.params.charttype == 'lines-avg')\"></div>\n" +
-    "    <li class=\"dropdown-submenu compare_views\"\n" +
-    "        ng-if=\"view.params.mode == 'chart' && (view.params.charttype == 'lines' || view.params.charttype == 'lines-avg')\">\n" +
-    "        <a><i\n" +
-    "            class=\"fa fa-fw fa-exchange\"></i> Compare with</a>\n" +
+    "    {{show_compare = view.params.mode == 'series' || (view.params.mode == 'chart'\n" +
+    "    && (view.params.charttype == 'lines' || view.params.charttype == 'lines-avg')); \"\"}}\n" +
+    "    <div class=\"divider\" ng-if=\"show_compare\"></div>\n" +
+    "    <li class=\"dropdown-submenu compare_views\" ng-if=\"show_compare\">\n" +
+    "        <a><i class=\"fa fa-fw fa-exchange\"></i> Compare with</a>\n" +
     "        <ul class=\"dropdown-menu\">\n" +
     "            <li ng-repeat=\"mergeView in viewsService.studioViewsService.views\" ng-if=\"mergeView != view\">\n" +
-    "                <a ng-click=\"viewsService.studioViewsService.studioScope.MergeWithView(view, mergeView)\">{{ mergeView.getName() }}</a>\n" +
+    "                <a ng-click=\"viewsService.studioViewsService.studioScope.MergeWithView(view, mergeView)\">{{\n" +
+    "                    mergeView.getName() }}</a>\n" +
     "            </li>\n" +
     "\n" +
     "            <div class=\"divider\"></div>\n" +
     "\n" +
-    "            <li ng-click=\"viewsService.studioViewsService.studioScope.MergeWithView(view, null);\"><a href=\"\"><i class=\"fa fa-fw fa-close\"></i> None</a></li>\n" +
+    "            <li ng-click=\"viewsService.studioViewsService.studioScope.MergeWithView(view, null);\"><a href=\"\"><i\n" +
+    "                    class=\"fa fa-fw fa-close\"></i> None</a></li>\n" +
     "        </ul>\n" +
     "    </li>\n" +
     "\n" +

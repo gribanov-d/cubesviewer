@@ -54,7 +54,25 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeSeriesController
             $scope.loadData();
         });
 
-	    $scope.loadData = function() {
+        $scope.$watch('view.compare_view', function (newValue, oldValue) {
+            if (newValue != oldValue) {
+                $scope.loadData();
+            }
+        });
+
+        $scope.$watch('view.compare_view.grid.data', function (newValue, oldValue) {
+            if (newValue && newValue.length && newValue != oldValue) {
+                $scope.loadData();
+            }
+        });
+
+        $scope.$watch('view.compare_view.pendingRequests', function (newValue, oldValue) {
+            if (newValue === 0) {
+                $scope.loadData();
+            }
+        });
+
+        $scope.loadData = function() {
 
             var view = $scope.view;
 
@@ -67,7 +85,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeSeriesController
             var jqxhr = browser.aggregate(browser_args, $scope._loadDataCallback(viewStateKey));
 
             $scope.view.pendingRequests++;
-		jqxhr.always(function() {
+            jqxhr.always(function() {
                 $scope.view.pendingRequests--;
                 $rootScope.$apply();
             });
@@ -75,8 +93,8 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeSeriesController
 
         };
 
-	    $scope._loadDataCallback = function(viewStateKey) {
-		    return function(data, status) {
+        $scope._loadDataCallback = function(viewStateKey) {
+            return function(data, status) {
                 // Only update if view hasn't changed since data was requested.
                 if (viewStateKey == $scope._viewStateKey) {
                     $scope.validateData(data, status);
@@ -86,7 +104,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeSeriesController
             };
         };
 
-	    $scope.processData = function(data) {
+        $scope.processData = function(data) {
 
             var view = $scope.view;
 
@@ -163,6 +181,36 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeSeriesController
                 });
             });
             view.grid.data = newDataRows;
+
+            if (view.compare_view) {
+                var dRws = view.compare_view.grid.data;
+                var cDfs = view.compare_view.grid.columnDefs;
+
+                dRws.forEach(function (row) {
+                    var newRow = {};
+                    var series = {};
+                    cDfs.forEach(function (col) {
+                        var id = col['field'];
+                        newRow[id] = row[id];
+                        if (id == 'key0') {
+                            newRow[id] = '(C) ' + newRow[id]
+                        }
+                        aggregates.forEach(function (agg) {
+                            if (row['_cells'][id]) {
+                                series[agg][id] = row['_cells'][id][agg];
+                            } else {
+                                series[agg][id] = row[id];
+                            }
+                            if (id == 'key0') {
+                                series[agg][id] = '\\-' + aggregateNames[agg];
+                            }
+                        });
+                    });
+                    newDataRows.push(newRow);
+                });
+                view.grid.data = newDataRows;
+            }
+
             $scope.group_x();
 
             seriesOperationsService.applyCalculations($scope.view, $scope.view.grid.data, view.grid.columnDefs);

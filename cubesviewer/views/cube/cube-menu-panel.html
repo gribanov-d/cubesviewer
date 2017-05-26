@@ -29,21 +29,21 @@
     <div class="divider"></div>
     <li ng-click="viewsService.studioViewsService.studioScope.showHelpView(view)"><a><i
             class="fa fa-fw fa-question"></i> Help</a></li>
-
-    <div class="divider"
-         ng-if="view.params.mode == 'chart' && (view.params.charttype == 'lines' || view.params.charttype == 'lines-avg')"></div>
-    <li class="dropdown-submenu compare_views"
-        ng-if="view.params.mode == 'chart' && (view.params.charttype == 'lines' || view.params.charttype == 'lines-avg')">
-        <a><i
-            class="fa fa-fw fa-exchange"></i> Compare with</a>
+    {{show_compare = view.params.mode == 'series' || (view.params.mode == 'chart'
+    && (view.params.charttype == 'lines' || view.params.charttype == 'lines-avg')); ""}}
+    <div class="divider" ng-if="show_compare"></div>
+    <li class="dropdown-submenu compare_views" ng-if="show_compare">
+        <a><i class="fa fa-fw fa-exchange"></i> Compare with</a>
         <ul class="dropdown-menu">
             <li ng-repeat="mergeView in viewsService.studioViewsService.views" ng-if="mergeView != view">
-                <a ng-click="viewsService.studioViewsService.studioScope.MergeWithView(view, mergeView)">{{ mergeView.getName() }}</a>
+                <a ng-click="viewsService.studioViewsService.studioScope.MergeWithView(view, mergeView)">{{
+                    mergeView.getName() }}</a>
             </li>
 
             <div class="divider"></div>
 
-            <li ng-click="viewsService.studioViewsService.studioScope.MergeWithView(view, null);"><a href=""><i class="fa fa-fw fa-close"></i> None</a></li>
+            <li ng-click="viewsService.studioViewsService.studioScope.MergeWithView(view, null);"><a href=""><i
+                    class="fa fa-fw fa-close"></i> None</a></li>
         </ul>
     </li>
 
