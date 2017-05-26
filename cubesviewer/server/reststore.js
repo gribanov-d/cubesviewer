@@ -311,6 +311,11 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
                 dialogService.show("Rename dashboard first.");
                 return;
             }
+            if (reststoreService.dashboard > 0 &&
+                parseInt(reststoreService.dashboard.owner) !== parseInt(cvOptions.user)) {
+                dialogService.show('Cannot save a dashboard that belongs to another user. Clone it first.');
+                return;
+            }
             $http({
                 "method": "POST",
                 "url": cvOptions.backendUrl + "/dashboard/save/",
