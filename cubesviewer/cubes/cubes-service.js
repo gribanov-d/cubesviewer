@@ -116,7 +116,7 @@ angular.module('cv.cubes').service("cubesService", ['$rootScope', '$log', 'cvOpt
             'url': path,
             'data': params,
             'headers': {
-                "Cache-Control": "public, max-age=43200"
+                "Cache-Control": "no-cache"
             },
             'success': cubesService._cubesRequestCallback(successCallback),
             'dataType': cvOptions.jsonRequestType
