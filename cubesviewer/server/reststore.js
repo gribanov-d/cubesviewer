@@ -271,9 +271,13 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
         };
 
         reststoreService.shareDashboard = function () {
-            var dashboard = reststoreService.dashboard;
+            if (!reststoreService.dashboard.id) {
+                dialogService.show('Cannot share/unshare unsaved dashboard. Save it first.');
+                return;
+            }
+
             if (reststoreService.dashboard.owner != cvOptions.user) {
-                dialogService.show('Cannot share/unshare a dashboard that belongs to other user (try cloning the dashboard).');
+                dialogService.show('Cannot share/unshare a dashboard that belongs to another user (try clone  it first).');
                 return;
             }
 
@@ -311,7 +315,7 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
                 dialogService.show("Rename dashboard first.");
                 return;
             }
-            if (reststoreService.dashboard > 0 &&
+            if (reststoreService.dashboard.id > 0 &&
                 parseInt(reststoreService.dashboard.owner) !== parseInt(cvOptions.user)) {
                 dialogService.show('Cannot save a dashboard that belongs to another user. Clone it first.');
                 return;
@@ -339,6 +343,7 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
             });
             if (_new) {
                 reststoreService.savedDashboards.push(data);
+                reststoreService.dashboard = data;
             }
             dialogService.show("Dashboard saved.");
         };
