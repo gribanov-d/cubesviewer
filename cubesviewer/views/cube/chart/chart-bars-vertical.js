@@ -54,6 +54,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsVertica
 
 		var container = $($element).find("svg").get(0);
 		var xAxisLabel = ( (view.params.xaxis != null) ? view.cube.dimensionParts(view.params.xaxis).label : "None")
+        var xAxisDimension = view.cube.dimensionParts(view.params.xaxis);
 
         var tooltip_aggregates = $scope.getTooltipTemplateAggregates(view);
 
@@ -64,9 +65,11 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsVertica
 	    	var serie = [];
 	    	for (var i = 1; i < columnDefs.length; i++) {
 	    		var value = e[columnDefs[i].name];
-	    		var data = { "x": columnDefs[i].name, "y":  (value != undefined) ? value : 0 }
+	    		var data = { "x": i, "y":  (value !== undefined) ? value : 0 }
                 tooltip_aggregates.forEach(function(v){
-                    data[v] = e['_cells'][columnDefs[i].field][v];
+                    if (e['_cells'][columnDefs[i].field] !== undefined) {
+                        data[v] = e['_cells'][columnDefs[i].field][v];
+                    }
                 });
 	    		serie.push(data);
 	    	}
@@ -83,19 +86,10 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsVertica
 	    });
 	    d.sort(function(a,b) { return a.key < b.key ? -1 : (a.key > b.key ? +1 : 0) });
 
-	    /*
-	    xticks = [];
-	    for (var i = 1; i < colNames.length; i++) {
-    		xticks.push([ i * 10, colNames[i] ]);
-	    }
-	    */
 
 	    var chartOptions = {
-	    	  //barColor: d3.scale.category20().range(),
-	    	  delay: 1200,
-	    	  groupSpacing: 0.1,
-	    	  //reduceXTicks: false,
-	    	  //staggerLabels: true
+	    	  delay: 120,
+	    	  groupSpacing: 0.1
 	    };
 
 	    var ag = $.grep(view.cube.aggregates, function(ag) { return ag.ref == view.params.yaxis })[0];
@@ -103,7 +97,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsVertica
 
 	    nv.addGraph(function() {
 	        var chart = nv.models.multiBarChart()
-		          //.margin({bottom: 100})
+                  .useInteractiveGuideline(true)
 		          .showLegend(!!view.params.chartoptions.showLegend)
 		          .margin({left: 120});
 
@@ -114,19 +108,35 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsVertica
 	        chart.options(chartOptions);
 	        chart.multibar.hideable(true);
 
-	        //chart.xAxis.axisLabel(xAxisLabel).showMaxMin(true).tickFormat(d3.format(',0f'));
-	        chart.xAxis.axisLabel(xAxisLabel);
+            chart.xAxis
+                .axisLabel(xAxisLabel)
+                .tickFormat(function (d, i) {
+                    return $scope.formatXAxisTick(columnDefs[d], xAxisDimension);
+                });
 
-	        //chart.yAxis.tickFormat(d3.format(',.2f'));
-	        chart.yAxis.tickFormat(function(d,i) {
-	        	return colFormatter(d);
-	        });
+            chart.yAxis.tickFormat(function (d, i) {
+                return colFormatter(d);
+            });
 
-	        d3.select(container)
-	            .datum(d)
-	            .call(chart);
+            chart.tooltip.headerFormatter(function (d, i) {
+                return $scope.formatXAxisTooltip(columnDefs[d], xAxisDimension);
+            });
+            chart.interactiveLayer.tooltip.headerFormatter(function (d, i) {
+                return $scope.formatXAxisTooltip(columnDefs[d], xAxisDimension);
+            });
 
-	        //nv.utils.windowResize(chart.update);
+            chart.interactiveLayer.tooltip.valueFormatter(function (d, i) {
+                return colFormatter(d);
+            });
+
+            $scope.modify_tooltip(chart);
+
+            d3.select(container)
+                .datum(d)
+                .call(chart);
+
+            $scope.chartCtrl.cleanupTooltip();
+
 
     	    // Handler for state change
             chart.dispatch.on('stateChange', function(newState) {
@@ -143,7 +153,6 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsVertica
 				}
             });
 
-	        //chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
 
             $scope.chartCtrl.chart = chart;
 
