@@ -300,9 +300,33 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeController", ['$
 				return eval(measure.info['cv-formatter']);
 			};
 		} else {
-			formatterFunction = function(value) {
-				return Math.formatnumber(value, (agmes.ref=="record_count" ? 0 : 2));
-			};
+			if (agmes.ref=="record_count") {
+                formatterFunction = function(value) {
+                    return Math.formatnumber(value, 0);
+                };
+			} else {
+                var formatNumber = d3.format(".1f"),
+                    formatBillion = function (x) {
+                        return formatNumber(x / 1e9) + "B";
+                    },
+                    formatMillion = function (x) {
+                        return formatNumber(x / 1e6) + "M";
+                    },
+                    formatThousand = function (x) {
+                        return formatNumber(x / 1e3) + "k";
+                    },
+                    formatRaw = function(x) {
+                        return Math.formatnumber(x, 2);
+                    };
+
+                formatterFunction = function (x) {
+                    var v = Math.abs(x);
+                    return (v >= .9995e9 ? formatBillion
+                        : v >= .9995e6 ? formatMillion
+                            : v >= .9995e3 ? formatThousand
+                                : formatRaw)(x);
+                };
+            }
 		}
 
 		return formatterFunction;
