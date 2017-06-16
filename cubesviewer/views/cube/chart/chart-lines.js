@@ -62,6 +62,26 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
         });
 
 
+        $scope.postprocess_values = function (serie, method) {
+            if (method === 'normalize') {
+                var max_value = 0;
+                var value = 0;
+                for (var i = 0; i < serie.length; i++) {
+                    value = Math.abs(serie[i].y);
+                    max_value = max_value < value ? value : max_value;
+                }
+                for (var j = 0; j < serie.length; j++) {
+                    serie[j].y = serie[j].y / max_value;
+                }
+            }
+            else if (method === 'revert') {
+                for (var k = 0; k < serie.length; k++) {
+                    serie[k].y = 1 / (1 - serie[k].y / 100);
+                }
+            }
+            return serie;
+        };
+
         /**
          * Draws a vertical bars chart.
          */
@@ -104,6 +124,8 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
 
                 serie = $scope.group_x(serie, tooltip_aggregates, $scope.view.params.chart_group_x,
                     $scope.view.params.chart_group_x_method);
+
+                serie = $scope.postprocess_values(serie, $scope.view.params.chart_postprocess_method);
 
                 var series = {"values": serie, "key": e["key"] !== "" ? e["key"] : view.params.yaxis};
                 if (view.params["chart-disabledseries"]) {

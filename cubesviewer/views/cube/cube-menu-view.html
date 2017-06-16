@@ -204,6 +204,24 @@
         </ul>
     </li>
 
+    <li ng-show="view.params.mode == 'chart'"
+        class="dropdown-submenu">
+        <a tabindex="0"><i class="fa fa-fw fa-calculator"></i> Do Math</a>
+        <ul class="dropdown-menu">
+            <li ng-click="SetPostProcessMethod('normalize')">
+                <a href=""><i class="fa fa-fw fa-arrows-v"></i> Normalize</a>
+            </li>
+            <li ng-click="SetPostProcessMethod('revert')">
+                <a href=""><i class="fa fa-fw fa-retweet"></i> Revert</a>
+            </li>
+            <div class="divider"></div>
+            <li ng-click="SetPostProcessMethod('reset')">
+                <a href=""><i class="fa fa-fw fa-times"></i> Reset</a>
+            </li>
+
+        </ul>
+    </li>
+
     <div ng-show="cvOptions.seriesOperationsEnabled && (view.params.mode == 'series' || view.params.mode == 'chart' || view.params.mode == 'widget')"
          class="divider"></div>
 

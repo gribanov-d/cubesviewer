@@ -486,8 +486,13 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeController", ['$
 	* Set group_x method.
 	*/
 	$scope.SetGroupXMethod = function(method){
-	$scope.view.params.chart_group_x_method = method.toLowerCase();
-	$scope.refreshView();
+		$scope.view.params.chart_group_x_method = method.toLowerCase();
+		$scope.refreshView();
+	};
+
+	$scope.SetPostProcessMethod = function(method) {
+		$scope.view.params.chart_postprocess_method = method.toLowerCase();
+		$scope.refreshView();
 	};
 
 	/*

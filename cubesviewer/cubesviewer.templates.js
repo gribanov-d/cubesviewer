@@ -1154,6 +1154,24 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "        </ul>\n" +
     "    </li>\n" +
     "\n" +
+    "    <li ng-show=\"view.params.mode == 'chart'\"\n" +
+    "        class=\"dropdown-submenu\">\n" +
+    "        <a tabindex=\"0\"><i class=\"fa fa-fw fa-calculator\"></i> Do Math</a>\n" +
+    "        <ul class=\"dropdown-menu\">\n" +
+    "            <li ng-click=\"SetPostProcessMethod('normalize')\">\n" +
+    "                <a href=\"\"><i class=\"fa fa-fw fa-arrows-v\"></i> Normalize</a>\n" +
+    "            </li>\n" +
+    "            <li ng-click=\"SetPostProcessMethod('revert')\">\n" +
+    "                <a href=\"\"><i class=\"fa fa-fw fa-retweet\"></i> Revert</a>\n" +
+    "            </li>\n" +
+    "            <div class=\"divider\"></div>\n" +
+    "            <li ng-click=\"SetPostProcessMethod('reset')\">\n" +
+    "                <a href=\"\"><i class=\"fa fa-fw fa-times\"></i> Reset</a>\n" +
+    "            </li>\n" +
+    "\n" +
+    "        </ul>\n" +
+    "    </li>\n" +
+    "\n" +
     "    <div ng-show=\"cvOptions.seriesOperationsEnabled && (view.params.mode == 'series' || view.params.mode == 'chart' || view.params.mode == 'widget')\"\n" +
     "         class=\"divider\"></div>\n" +
     "\n" +
