@@ -165,6 +165,11 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeFilterDimensionC
 		$scope.applyFilter();
 	};
 
+	$scope.selectInvert = function() {
+        $scope.filterInverted = ! $scope.filterInverted;
+        $scope.applyFilter();
+	};
+
 	$scope._processDimensionValuesData = function(data) {
 
 		// Get dimension

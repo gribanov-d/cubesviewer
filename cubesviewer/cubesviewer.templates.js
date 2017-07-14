@@ -1618,7 +1618,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "\n" +
     "              <div class=\"form-group\" style=\"display: inline-block; margin-bottom: 0; vertical-align: middle; margin-bottom: 2px; \">\n" +
     "\n" +
-    "                  <div class=\"btn btn-default\" ng-click=\"filterInverted = !filterInverted\" ng-class=\"{ 'active': filterInverted, 'btn-danger': filterInverted }\">\n" +
+    "                  <div class=\"btn btn-default\" ng-click=\"selectInvert();\" ng-class=\"{ 'active': filterInverted, 'btn-danger': filterInverted }\">\n" +
     "                    <input type=\"checkbox\" ng-model=\"filterInverted\" style=\"pointer-events: none; margin: 0px; vertical-align: middle;\" ></input>\n" +
     "                    <b>&ne;</b> Invert\n" +
     "                  </div>\n" +
