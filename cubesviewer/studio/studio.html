@@ -106,13 +106,13 @@
                     <li ng-repeat="d in reststoreService.savedDashboards | orderBy:'d.name'"
                         ng-if="!d.shared" ng-click="reststoreService.restoreDashboard(d)"><a
                             style="max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;"><i
-                            class="fa fa-fw"></i> {{ d.name }} [{{d.login}}]
+                            class="fa fa-fw"></i> {{ d.name }}
                         <i ng-if="d.is_default" class="fa fa-fw fa-star-o"></i></a></li>
                     <li class="dropdown-header">Shared</li>
                     <li ng-repeat="d in reststoreService.savedDashboards | orderBy:'d.name'"
                         ng-if="d.shared" ng-click="reststoreService.restoreDashboard(d)"><a
                             style="max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;"><i
-                            class="fa fa-fw"></i> {{ d.name }} [{{d.login}}]</a></li>
+                            class="fa fa-fw"></i> {{ d.name }}</a></li>
                 </ul>
             </div>
             <div class="dropdown" style="display: inline-block;">

@@ -471,13 +471,13 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "                    <li ng-repeat=\"d in reststoreService.savedDashboards | orderBy:'d.name'\"\n" +
     "                        ng-if=\"!d.shared\" ng-click=\"reststoreService.restoreDashboard(d)\"><a\n" +
     "                            style=\"max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;\"><i\n" +
-    "                            class=\"fa fa-fw\"></i> {{ d.name }} [{{d.login}}]\n" +
+    "                            class=\"fa fa-fw\"></i> {{ d.name }}\n" +
     "                        <i ng-if=\"d.is_default\" class=\"fa fa-fw fa-star-o\"></i></a></li>\n" +
     "                    <li class=\"dropdown-header\">Shared</li>\n" +
     "                    <li ng-repeat=\"d in reststoreService.savedDashboards | orderBy:'d.name'\"\n" +
     "                        ng-if=\"d.shared\" ng-click=\"reststoreService.restoreDashboard(d)\"><a\n" +
     "                            style=\"max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;\"><i\n" +
-    "                            class=\"fa fa-fw\"></i> {{ d.name }} [{{d.login}}]</a></li>\n" +
+    "                            class=\"fa fa-fw\"></i> {{ d.name }}</a></li>\n" +
     "                </ul>\n" +
     "            </div>\n" +
     "            <div class=\"dropdown\" style=\"display: inline-block;\">\n" +
