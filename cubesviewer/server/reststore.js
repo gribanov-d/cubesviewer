@@ -428,6 +428,15 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
             }
         };
 
+        reststoreService.getCubeLag = function (cube_name) {
+            var l = reststoreService.updates.filter(function (c) {
+                return c.cube === cube_name
+            });
+            if (l.length > 0) {
+                return l[0]['lag'];
+            }
+        };
+
         reststoreService.saveFiddle = function (serialized_views) {
             $http({
                 "method": "POST",

@@ -1226,7 +1226,9 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "        <h2 ng-show=\"view.getControlsHidden()\" style=\"margin-top: 5px;\">\n" +
     "            <i class=\"fa fa-fw fa-file-o\"></i> {{ view.getName() }}\n" +
     "            <span ng-if=\"reststoreService.getCubeUpdate(view.cube.name)\"\n" +
-    "                  class=\"pull-right small\">Last date: {{reststoreService.getCubeUpdate(view.cube.name)}}</span>\n" +
+    "                  class=\"pull-right small\">Last date: {{reststoreService.getCubeUpdate(view.cube.name)}}\n" +
+    "                <span ng-if=\"reststoreService.getCubeLag(view.cube.name)\">Lag: {{reststoreService.getCubeLag(view.cube.name)}}</span>\n" +
+    "            </span>\n" +
     "        </h2>\n" +
     "\n" +
     "        <div ng-include=\"'views/cube/alerts.html'\"></div>\n" +
@@ -1305,6 +1307,8 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "                    <button type=\"button\" class=\"btn btn-info btn-xs\" style=\"visibility: hidden;\"><i\n" +
     "                            class=\"fa fa-fw fa-info\"></i></button>\n" +
     "                    <span ng-if=\"reststoreService.getCubeUpdate(view.cube.name)\">Last date: {{reststoreService.getCubeUpdate(view.cube.name)}}</span>\n" +
+    "                    <span ng-if=\"reststoreService.getCubeLag(view.cube.name)\"><button type=\"button\" class=\"btn btn-info btn-xs\" style=\"visibility: hidden;\"><i\n" +
+    "                            class=\"fa fa-fw fa-info\"></i></button>Lag: {{reststoreService.getCubeLag(view.cube.name)}}</span>\n" +
     "                </div>\n" +
     "\n" +
     "                <div class=\"cv-view-viewinfo-drill\">\n" +

@@ -17,7 +17,9 @@
         <h2 ng-show="view.getControlsHidden()" style="margin-top: 5px;">
             <i class="fa fa-fw fa-file-o"></i> {{ view.getName() }}
             <span ng-if="reststoreService.getCubeUpdate(view.cube.name)"
-                  class="pull-right small">Last date: {{reststoreService.getCubeUpdate(view.cube.name)}}</span>
+                  class="pull-right small">Last date: {{reststoreService.getCubeUpdate(view.cube.name)}}
+                <span ng-if="reststoreService.getCubeLag(view.cube.name)">Lag: {{reststoreService.getCubeLag(view.cube.name)}}</span>
+            </span>
         </h2>
 
         <div ng-include="'views/cube/alerts.html'"></div>
@@ -96,6 +98,8 @@
                     <button type="button" class="btn btn-info btn-xs" style="visibility: hidden;"><i
                             class="fa fa-fw fa-info"></i></button>
                     <span ng-if="reststoreService.getCubeUpdate(view.cube.name)">Last date: {{reststoreService.getCubeUpdate(view.cube.name)}}</span>
+                    <span ng-if="reststoreService.getCubeLag(view.cube.name)"><button type="button" class="btn btn-info btn-xs" style="visibility: hidden;"><i
+                            class="fa fa-fw fa-info"></i></button>Lag: {{reststoreService.getCubeLag(view.cube.name)}}</span>
                 </div>
 
                 <div class="cv-view-viewinfo-drill">
