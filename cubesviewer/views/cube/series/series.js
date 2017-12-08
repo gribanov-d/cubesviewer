@@ -290,7 +290,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeSeriesController
                     } else {
                         newRow[columnDefs[i].field] = sum;
                         if (method === 'avg') {
-                            row[i].y /= step;
+                            newRow[columnDefs[i].field] = sum / step;
                         }
                         j = 1;
                         sum = 0;
