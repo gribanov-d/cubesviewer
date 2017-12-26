@@ -96,23 +96,35 @@
         </div>
 
         <div class="dropdown m-b" style="display: inline-block; margin-left: 5px;">
+            <script type="text/ng-template" id="dashboardMenuTree">
+                <a ng-if="!dashboard.submenu"
+                   style="max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;"><i
+                        class="fa fa-fw"></i> {{ dashboard.name }}</a>
+                <a ng-if="dashboard.submenu"
+                   style="max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;"><i
+                        class="fa fa-fw"></i> {{ dashboard.name }}</a>
+                <ul class="dropdown-menu submenu" ng-if="dashboard.submenu">
+                    <li ng-repeat="dashboard in dashboard.submenu | orderBy:'dashboard.name'" ng-include="'dashboardMenuTree'"
+                        class="dropdown-submenu"></li>
+                    <li ng-repeat="dashboard in dashboard.views | orderBy:'dashboard.name'"
+                        ng-click="reststoreService.restoreDashboard(dashboard)"><a
+                            style="max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;"><i
+                            class="fa fa-fw"></i> {{ dashboard.name }}</a></li>
+                </ul>
+            </script>
             <div ng-if="cvOptions.backendUrl" class="dropdown m-b" style="display: inline-block; ">
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" data-submenu>
                     <i class="fa fa-fw fa-bars"></i> Dashboards <span class="caret"></span>
                 </button>
-
                 <ul class="dropdown-menu cv-gui-catalog-menu">
                     <li class="dropdown-header">Personal</li>
-                    <li ng-repeat="d in reststoreService.savedDashboards | orderBy:'d.name'"
-                        ng-if="!d.shared" ng-click="reststoreService.restoreDashboard(d)"><a
-                            style="max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;"><i
-                            class="fa fa-fw"></i> {{ d.name }}
-                        <i ng-if="d.is_default" class="fa fa-fw fa-star-o"></i></a></li>
+                    <li ng-repeat="dashboard in savedDashboards | orderBy:'dashboard.name'"
+                        ng-include="'dashboardMenuTree'" ng-class="{'dropdown-submenu': dashboard.submenu}">
+                    </li>
                     <li class="dropdown-header">Shared</li>
-                    <li ng-repeat="d in reststoreService.savedDashboards | orderBy:'d.name'"
-                        ng-if="d.shared" ng-click="reststoreService.restoreDashboard(d)"><a
-                            style="max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;"><i
-                            class="fa fa-fw"></i> {{ d.name }}</a></li>
+                    <li ng-repeat="dashboard in sharedDashboards | orderBy:'dashboard.name'"
+                        ng-include="'dashboardMenuTree'" ng-class="{'dropdown-submenu': dashboard.submenu}">
+                    </li>
                 </ul>
             </div>
             <div class="dropdown" style="display: inline-block;">
@@ -124,7 +136,7 @@
                     <li class="dropdown-header">Current</li>
                     <li><a ng-if="reststoreService.dashboard">{{reststoreService.dashboard.name}}</a></li>
                     <div class="divider"></div>
-                    <li><a ng-click="renameDashboard()"><i class="fa fa-fw fa-pencil"></i> Rename...</a>
+                    <li><a ng-click="setupDashboard()"><i class="fa fa-fw fa-pencil"></i> Dashboard setup</a>
                     <li ng-class="{disabled:reststoreService.dashboard == null}"><a ng-click="cloneDashboard()"><i
                             class="fa fa-fw fa-clone"></i> Clone</a></li>
                     <li><a ng-click="saveDashboard()"><i class="fa fa-fw fa-save"></i> Save</a></li>

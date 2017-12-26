@@ -86,24 +86,28 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
   );
 
 
-  $templateCache.put('studio/dashboard/rename.html',
+  $templateCache.put('studio/dashboard/setup.html',
     "  <div class=\"modal-header\">\n" +
     "    <button type=\"button\" ng-click=\"close();\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\"><i class=\"fa fa-fw fa-close\"></i></span></button>\n" +
-    "    <h4 class=\"modal-title\" id=\"myModalLabel\"><i class=\"fa fa-pencil\"></i> Rename dashboard</h4>\n" +
+    "    <h4 class=\"modal-title\" id=\"myModalLabel\"><i class=\"fa fa-pencil\"></i>Dashboard setup</h4>\n" +
     "  </div>\n" +
     "  <div class=\"modal-body\">\n" +
     "\n" +
-    "        <form class=\"form\" ng-submit=\"renameDashboard(dashboardName);\">\n" +
+    "        <form class=\"form\" ng-submit=\"setupDashboard(dashboardName, dashboardMenuPath);\">\n" +
     "            <div class=\"form-group\">\n" +
-    "                <label>Name:</label>\n" +
-    "                <input class=\"form-control\" ng-model=\"dashboardName\" />\n" +
+    "                <label>Dashboard name:</label>\n" +
+    "                <input class=\"form-control\" ng-model=\"dashboardName\" id=\"dashboard_name\" placeholder=\"Enter dashboard name\" />\n" +
+    "            </div>\n" +
+    "            <div class=\"form-group\">\n" +
+    "                <label>Dashboard path:</label>\n" +
+    "                <input class=\"form-control\" ng-model=\"dashboardMenuPath\" id=\"dashboard_path\" placeholder=\"folder/subfolder/...\" />\n" +
     "            </div>\n" +
     "        </form>\n" +
     "\n" +
     "  </div>\n" +
     "  <div class=\"modal-footer\">\n" +
     "    <button type=\"button\" ng-click=\"close();\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Cancel</button>\n" +
-    "    <button type=\"button\" ng-click=\"renameDashboard(dashboardName);\" class=\"btn btn-primary\" data-dismiss=\"modal\">Rename</button>\n" +
+    "    <button type=\"button\" ng-click=\"setupDashboard(dashboardName, dashboardMenuPath);\" class=\"btn btn-primary\" data-dismiss=\"modal\">Ok</button>\n" +
     "  </div>"
   );
 
@@ -461,23 +465,35 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "        </div>\n" +
     "\n" +
     "        <div class=\"dropdown m-b\" style=\"display: inline-block; margin-left: 5px;\">\n" +
+    "            <script type=\"text/ng-template\" id=\"dashboardMenuTree\">\n" +
+    "                <a ng-if=\"!dashboard.submenu\"\n" +
+    "                   style=\"max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;\"><i\n" +
+    "                        class=\"fa fa-fw\"></i> {{ dashboard.name }}</a>\n" +
+    "                <a ng-if=\"dashboard.submenu\"\n" +
+    "                   style=\"max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;\"><i\n" +
+    "                        class=\"fa fa-fw\"></i> {{ dashboard.name }}</a>\n" +
+    "                <ul class=\"dropdown-menu submenu\" ng-if=\"dashboard.submenu\">\n" +
+    "                    <li ng-repeat=\"dashboard in dashboard.submenu | orderBy:'dashboard.name'\" ng-include=\"'dashboardMenuTree'\"\n" +
+    "                        class=\"dropdown-submenu\"></li>\n" +
+    "                    <li ng-repeat=\"dashboard in dashboard.views | orderBy:'dashboard.name'\"\n" +
+    "                        ng-click=\"reststoreService.restoreDashboard(dashboard)\"><a\n" +
+    "                            style=\"max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;\"><i\n" +
+    "                            class=\"fa fa-fw\"></i> {{ dashboard.name }}</a></li>\n" +
+    "                </ul>\n" +
+    "            </script>\n" +
     "            <div ng-if=\"cvOptions.backendUrl\" class=\"dropdown m-b\" style=\"display: inline-block; \">\n" +
     "                <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\" data-submenu>\n" +
     "                    <i class=\"fa fa-fw fa-bars\"></i> Dashboards <span class=\"caret\"></span>\n" +
     "                </button>\n" +
-    "\n" +
     "                <ul class=\"dropdown-menu cv-gui-catalog-menu\">\n" +
     "                    <li class=\"dropdown-header\">Personal</li>\n" +
-    "                    <li ng-repeat=\"d in reststoreService.savedDashboards | orderBy:'d.name'\"\n" +
-    "                        ng-if=\"!d.shared\" ng-click=\"reststoreService.restoreDashboard(d)\"><a\n" +
-    "                            style=\"max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;\"><i\n" +
-    "                            class=\"fa fa-fw\"></i> {{ d.name }}\n" +
-    "                        <i ng-if=\"d.is_default\" class=\"fa fa-fw fa-star-o\"></i></a></li>\n" +
+    "                    <li ng-repeat=\"dashboard in savedDashboards | orderBy:'dashboard.name'\"\n" +
+    "                        ng-include=\"'dashboardMenuTree'\" ng-class=\"{'dropdown-submenu': dashboard.submenu}\">\n" +
+    "                    </li>\n" +
     "                    <li class=\"dropdown-header\">Shared</li>\n" +
-    "                    <li ng-repeat=\"d in reststoreService.savedDashboards | orderBy:'d.name'\"\n" +
-    "                        ng-if=\"d.shared\" ng-click=\"reststoreService.restoreDashboard(d)\"><a\n" +
-    "                            style=\"max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;\"><i\n" +
-    "                            class=\"fa fa-fw\"></i> {{ d.name }}</a></li>\n" +
+    "                    <li ng-repeat=\"dashboard in sharedDashboards | orderBy:'dashboard.name'\"\n" +
+    "                        ng-include=\"'dashboardMenuTree'\" ng-class=\"{'dropdown-submenu': dashboard.submenu}\">\n" +
+    "                    </li>\n" +
     "                </ul>\n" +
     "            </div>\n" +
     "            <div class=\"dropdown\" style=\"display: inline-block;\">\n" +
@@ -489,7 +505,7 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "                    <li class=\"dropdown-header\">Current</li>\n" +
     "                    <li><a ng-if=\"reststoreService.dashboard\">{{reststoreService.dashboard.name}}</a></li>\n" +
     "                    <div class=\"divider\"></div>\n" +
-    "                    <li><a ng-click=\"renameDashboard()\"><i class=\"fa fa-fw fa-pencil\"></i> Rename...</a>\n" +
+    "                    <li><a ng-click=\"setupDashboard()\"><i class=\"fa fa-fw fa-pencil\"></i> Dashboard setup</a>\n" +
     "                    <li ng-class=\"{disabled:reststoreService.dashboard == null}\"><a ng-click=\"cloneDashboard()\"><i\n" +
     "                            class=\"fa fa-fw fa-clone\"></i> Clone</a></li>\n" +
     "                    <li><a ng-click=\"saveDashboard()\"><i class=\"fa fa-fw fa-save\"></i> Save</a></li>\n" +

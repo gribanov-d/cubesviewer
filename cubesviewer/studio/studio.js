@@ -227,17 +227,22 @@ angular.module('cv.studio').controller("CubesViewerStudioViewController", ['$roo
     };
 }]);
 
-
-function get_hierarchy_menu(views_list, check_func) {
-    var ret = [];
-    var d = [];
+function get_hierarchy_menu(list_of_items, check_func, isView) {
+    var result_list = [];
+    var itemsWithoutMenuPath = [];
     var menu = {};
-    $(views_list).each(function (idx, view) {
-        if (check_func(view)) {
-            var view_params = JSON.parse(view.data);
+    list_of_items.forEach(function (item) {
+        if (check_func(item)) {
+            var view_params = {};
+            if (isView) {
+                view_params = JSON.parse(item.data)
+            }
+            else {
+                view_params = item.options;
+            }
             if (view_params.menu_path) {
                 var parent = menu;
-                $(view_params.menu_path.split('/')).each(function (idx, name) {
+                view_params.menu_path.split('/').forEach(function (name) {
                     if (!parent[name]) {
                         parent[name] = {};
                     }
@@ -246,20 +251,20 @@ function get_hierarchy_menu(views_list, check_func) {
                 if (!parent['views']) {
                     parent['views'] = [];
                 }
-                parent['views'].push(view);
+                parent['views'].push(item);
             } else {
-                d.push(view)
+                itemsWithoutMenuPath.push(item)
             }
         }
     });
 
-    ret = construct_menu(menu);
+    result_list = construct_menu(menu);
 
-    $(d).each(function (i, v) {
-        ret.push(v)
+    itemsWithoutMenuPath.forEach(function (item) {
+        result_list.push(item);
     });
 
-    return ret;
+    return result_list;
 }
 
 function construct_menu(menu) {
@@ -351,7 +356,7 @@ angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootSco
 
             var modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: 'studio/rename.html',
+                templateUrl: 'studio/setup.html',
                 controller: 'CubesViewerRenameController',
                 appendTo: angular.element($($element).find('.cv-gui-modals')[0]),
                 size: "md",
@@ -493,14 +498,14 @@ angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootSco
         };
 
         /*
-         * Renames a dashboard.
+         * Setup a dashboard.
          */
-        $scope.renameDashboard = function () {
+        $scope.setupDashboard = function () {
 
             var modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: 'studio/dashboard/rename.html',
-                controller: 'CubesViewerRenameDashboardController',
+                templateUrl: 'studio/dashboard/setup.html',
+                controller: 'CubesViewerSetupDashboardController',
                 appendTo: angular.element($($element).find('.cv-gui-modals')[0]),
                 size: "md",
                 resolve: {
@@ -509,7 +514,7 @@ angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootSco
                     },
                     element: function () {
                         return $($element).find('.cv-gui-modals')[0]
-                    },
+                    }
                 }
             });
         };
@@ -546,10 +551,10 @@ angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootSco
             if (newValue != oldValue) {
                 $scope.savedViews = get_hierarchy_menu(reststoreService.savedViews, function (view) {
                     return view.owner == cvOptions.user && view.shared == false;
-                });
+                }, true);
                 $scope.sharedViews = get_hierarchy_menu(reststoreService.savedViews, function (view) {
                     return view.shared == true;
-                });
+                }, true);
             }
         });
 
@@ -564,13 +569,12 @@ angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootSco
         $scope.$watch('reststoreService.savedDashboards', function (newValue, oldValue) {
             // First load
             if (newValue != oldValue && newValue.length != 0 && oldValue.length == 0) {
-                reststoreService.savedDashboards.forEach(function (d) {
-                    if (d.is_default && d.owner == cvOptions.user) {
-                        reststoreService.dashboard = d;
-                        reststoreService.restoreDashboard(d);
-                        return;
-                    }
-                });
+                $scope.savedDashboards = get_hierarchy_menu(reststoreService.savedDashboards, function (dashboard) {
+                    return dashboard.owner == cvOptions.user;
+                }, false);
+                $scope.sharedDashboards = get_hierarchy_menu(reststoreService.savedDashboards, function (dashboard) {
+                    return true == dashboard.shared;
+                }, false)
             }
         });
 
@@ -734,15 +738,19 @@ angular.module('cv.studio').controller("CubesViewerHelpController", ['$rootScope
         };
     }]);
 
-angular.module('cv.studio').controller("CubesViewerRenameDashboardController", ['$rootScope', '$scope', '$uibModalInstance', 'cvOptions', 'cubesService', 'studioViewsService', 'dashboard',
+angular.module('cv.studio').controller("CubesViewerSetupDashboardController", ['$rootScope', '$scope', '$uibModalInstance', 'cvOptions', 'cubesService', 'studioViewsService', 'dashboard',
     function ($rootScope, $scope, $uibModalInstance, cvOptions, cubesService, studioViewsService, dashboard) {
 
         $scope.dashboardName = dashboard.name;
+        $scope.dashboardMenuPath = dashboard.options.menu_path;
 
-        $scope.renameDashboard = function (name) {
-
+        $scope.setupDashboard = function (name, menu_path) {
             if ((name != null) && (name != "")) {
                 dashboard.name = name;
+            }
+
+            if ((menu_path != null) && (menu_path != "")) {
+                dashboard.options.menu_path = menu_path;
             }
 
             $uibModalInstance.close();

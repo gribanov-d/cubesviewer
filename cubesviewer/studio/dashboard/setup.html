@@ -1,0 +1,22 @@
+  <div class="modal-header">
+    <button type="button" ng-click="close();" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-fw fa-close"></i></span></button>
+    <h4 class="modal-title" id="myModalLabel"><i class="fa fa-pencil"></i>Dashboard setup</h4>
+  </div>
+  <div class="modal-body">
+
+        <form class="form" ng-submit="setupDashboard(dashboardName, dashboardMenuPath);">
+            <div class="form-group">
+                <label>Dashboard name:</label>
+                <input class="form-control" ng-model="dashboardName" id="dashboard_name" placeholder="Enter dashboard name" />
+            </div>
+            <div class="form-group">
+                <label>Dashboard path:</label>
+                <input class="form-control" ng-model="dashboardMenuPath" id="dashboard_path" placeholder="folder/subfolder/..." />
+            </div>
+        </form>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" ng-click="close();" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+    <button type="button" ng-click="setupDashboard(dashboardName, dashboardMenuPath);" class="btn btn-primary" data-dismiss="modal">Ok</button>
+  </div>

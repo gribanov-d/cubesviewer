@@ -256,6 +256,7 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
                 'is_default': false,
                 'saved': false,
                 'options': {
+                    'menu_path': '',
                     'studioTwoColumn': false,
                     'hideControls': false
                 }
