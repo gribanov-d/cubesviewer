@@ -465,8 +465,11 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "        </div>\n" +
     "\n" +
     "        <div class=\"dropdown m-b\" style=\"display: inline-block; margin-left: 5px;\">\n" +
+    "            <!------------------------------>\n" +
+    "            <!----- Dashboards button ------>\n" +
+    "            <!------------------------------>\n" +
     "            <script type=\"text/ng-template\" id=\"dashboardMenuTree\">\n" +
-    "                <a ng-if=\"!dashboard.submenu\"\n" +
+    "                <a ng-if=\"!dashboard.submenu\" ng-click=\"reststoreService.restoreDashboard(dashboard)\"\n" +
     "                   style=\"max-width: 360px; overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;\"><i\n" +
     "                        class=\"fa fa-fw\"></i> {{ dashboard.name }}</a>\n" +
     "                <a ng-if=\"dashboard.submenu\"\n" +
@@ -496,6 +499,9 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
     "                    </li>\n" +
     "                </ul>\n" +
     "            </div>\n" +
+    "            <!------------------------------>\n" +
+    "            <!-- End of Dashboards button -->\n" +
+    "            <!------------------------------>\n" +
     "            <div class=\"dropdown\" style=\"display: inline-block;\">\n" +
     "                <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\" data-submenu>\n" +
     "                    <i class=\"fa fa-fw fa-wrench\"></i> Dashboard tools <span class=\"caret\"></span>\n" +

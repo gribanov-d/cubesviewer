@@ -63,9 +63,9 @@ module.exports = function(grunt) {
     	dist: {
 	    	files: {
 	    		'dist/cubesviewer.min.css': 'cubesviewer/cubesviewer.less'
-                /* Здесь можно прописать путь до локального analytics-web и при компиляции файлы сразу будут копироваться туда
-			    '/home/radren/dev/analytics-web/app/static/vendor/cubesviewer/dist/cubesviewer.min.css': 'cubesviewer/cubesviewer.less'
-			    */
+                // Здесь можно прописать путь до локального analytics-web и при компиляции файлы сразу будут копироваться туда
+			    // '/.../analytics-web/app/static/vendor/cubesviewer/dist/cubesviewer.min.css': 'cubesviewer/cubesviewer.less'
+
 	    	}
     	}
     },
@@ -76,9 +76,9 @@ module.exports = function(grunt) {
       dist: {
         files: {
             'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
-            /* Здесь можно прописать путь до локального analytics-web и при компиляции файлы сразу будут копироваться туда
-	        '/home/radren/dev/analytics-web/app/static/vendor/cubesviewer/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
-	        */
+            // Здесь можно прописать путь до локального analytics-web и при компиляции файлы сразу будут копироваться туда
+	        // '/.../analytics-web/app/static/vendor/cubesviewer/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+
         }
       }
     },
