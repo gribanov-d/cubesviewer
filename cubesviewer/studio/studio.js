@@ -356,7 +356,7 @@ angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootSco
 
             var modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: 'studio/setup.html',
+                templateUrl: 'studio/rename.html',
                 controller: 'CubesViewerRenameController',
                 appendTo: angular.element($($element).find('.cv-gui-modals')[0]),
                 size: "md",
@@ -570,7 +570,7 @@ angular.module('cv.studio').controller("CubesViewerStudioController", ['$rootSco
             // First load
             if (newValue != oldValue && newValue.length != 0 && oldValue.length == 0) {
                 $scope.savedDashboards = get_hierarchy_menu(reststoreService.savedDashboards, function (dashboard) {
-                    return dashboard.owner == cvOptions.user;
+                    return dashboard.owner == cvOptions.user && false == dashboard.shared;
                 }, false);
                 $scope.sharedDashboards = get_hierarchy_menu(reststoreService.savedDashboards, function (dashboard) {
                     return true == dashboard.shared;
