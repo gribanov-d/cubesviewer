@@ -86,28 +86,6 @@ angular.module('cv').run(['$templateCache', function($templateCache) {
   );
 
 
-  $templateCache.put('studio/dashboard/rename.html',
-    "<div class=\"modal-header\">\n" +
-    "    <button type=\"button\" ng-click=\"close();\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\"><i class=\"fa fa-fw fa-close\"></i></span></button>\n" +
-    "    <h4 class=\"modal-title\" id=\"myModalLabel\"><i class=\"fa fa-pencil\"></i> Rename dashboard</h4>\n" +
-    "</div>\n" +
-    "<div class=\"modal-body\">\n" +
-    "\n" +
-    "    <form class=\"form\" ng-submit=\"renameDashboard(dashboardName);\">\n" +
-    "        <div class=\"form-group\">\n" +
-    "            <label>Name:</label>\n" +
-    "            <input class=\"form-control\" ng-model=\"dashboardName\" />\n" +
-    "        </div>\n" +
-    "    </form>\n" +
-    "\n" +
-    "</div>\n" +
-    "<div class=\"modal-footer\">\n" +
-    "    <button type=\"button\" ng-click=\"close();\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Cancel</button>\n" +
-    "    <button type=\"button\" ng-click=\"renameDashboard(dashboardName);\" class=\"btn btn-primary\" data-dismiss=\"modal\">Rename</button>\n" +
-    "</div>"
-  );
-
-
   $templateCache.put('studio/dashboard/setup.html',
     "  <div class=\"modal-header\">\n" +
     "    <button type=\"button\" ng-click=\"close();\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\"><i class=\"fa fa-fw fa-close\"></i></span></button>\n" +

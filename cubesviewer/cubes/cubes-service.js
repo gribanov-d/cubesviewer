@@ -272,7 +272,7 @@ angular.module('cv.cubes').service("cubesService", ['$rootScope', '$log', 'cvOpt
 			var dimParts = view.cube.dimensionParts(e.dimension);
 			var cutDim = dimParts.dimension.name + ( dimParts.hierarchy.name != "default" ? "@" + dimParts.hierarchy.name : "" );
 
-			cuts.push(invert + cutDim + ":" + e.value.replace("-", "\\-"));
+			cuts.push(invert + cutDim + ":" + e.value.replace(/-/g, "\\-"));
 		});
 
 		// Date filters
