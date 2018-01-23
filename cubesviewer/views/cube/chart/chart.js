@@ -294,6 +294,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartController"
                 var f = d3.format('02f');
                 var year = colsdef.asDate.getFullYear(),
                     month = f(colsdef.asDate.getMonth() + 1),
+                    week = colsdef.weekNum,
                     day = f(colsdef.asDate.getDate()),
                     hour = f(colsdef.asDate.getHours()),
                     minutes = f(colsdef.asDate.getMinutes());
@@ -301,11 +302,17 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartController"
                 if (xd.level.role === 'year') {
                     return year;
                 }
+
                 else if (xd.level.role === 'month') {
-                    return month + '.' + year
+                    return month + '.' + year;
                 }
+
+                else if (xd.level.role === 'week') {
+                    return year + ', week ' + week;
+                }
+
                 else if (xd.level.role === 'day') {
-                    return day + '.' + month + '.' + year
+                    return day + '.' + month + '.' + year;
                 }
 
                 else if (xd.level.role === 'hour' || xd.level.role === 'minutes') {
@@ -321,11 +328,31 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartController"
                 var f = d3.format('02f');
                 var year = colsdef.asDate.getFullYear(),
                     month = f(colsdef.asDate.getMonth() + 1),
+                    week = f(colsdef.weekNum),
                     day = f(colsdef.asDate.getDate()),
                     hour = f(colsdef.asDate.getHours()),
                     minutes = f(colsdef.asDate.getMinutes());
 
-                return day + '.' + month + '.' + year + ' ' + hour + ':' + minutes;
+                if (xd.level.role === 'year') {
+                    return '' + year;
+                }
+
+                else if (xd.level.role === 'month') {
+                    return month + '.' + year;
+                }
+
+                else if (xd.level.role === 'week') {
+                    return year + ', week ' + week;
+                }
+
+                else if (xd.level.role === 'day') {
+                    return day + '.' + month + '.' + year;
+                }
+
+                else {
+                    return day + '.' + month + '.' + year + ' ' + hour + ':' + minutes;
+                }
+
             } else {
                 return colsdef.name;
             }

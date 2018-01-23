@@ -397,8 +397,12 @@ cubesviewer._seriesAddRows = function($scope, data, zaxis) {
 			var ag = $.grep(view.cube.aggregates, function(ag) { return ag.ref == view.params.yaxis })[0];
 
             var asDate = null;
+            var weeknum = null;
             if (xAxisDimension.dimension.role === 'time') {
                 var date_arr = colKey.split('/');
+                if (xAxisDimension.dimension.info['cv-datefilter-hasweek']) {
+                    weeknum = date_arr.splice(2, 1);
+                }
                 asDate = new (Function.prototype.bind.apply(Date, [null].concat(date_arr)));
                 if (asDate && date_arr.length > 1) {
                     asDate.setMonth(asDate.getMonth() - 1);
@@ -413,6 +417,7 @@ cubesviewer._seriesAddRows = function($scope, data, zaxis) {
                 field: colKey,
 				index : colKey,
                 asDate: asDate,
+                weekNum: weeknum,
 				cellClass : "text-right",
                 //sorttype : "number",
                 cellTemplate: '<div class="ui-grid-cell-contents" title="TOOLTIP">{{ col.colDef.formatter(COL_FIELD, row, col) }}</div>',
