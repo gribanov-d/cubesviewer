@@ -399,14 +399,26 @@ cubesviewer._seriesAddRows = function($scope, data, zaxis) {
             var asDate = null;
             var weeknum = null;
             if (xAxisDimension.dimension.role === 'time') {
-                var date_arr = colKey.split('/');
-                if (xAxisDimension.dimension.info['cv-datefilter-hasweek']) {
-                    weeknum = date_arr.splice(2, 1);
-                }
-                if (date_arr.length > 1) {
-                    date_arr[1] -= 1;
-                }
-                asDate = new Date(Date.UTC.apply(null, date_arr));
+                var date_arr = [];
+                var date_parts = {};
+                xAxisDimension.dimension.levels.forEach(function (level) {
+                    date_parts[level.role] = e[xAxisDimension.dimension.name + '.' + level.name];
+                });
+
+                ['year', 'month', 'week', 'day', 'hour'].forEach(function (e) {
+                    if (date_parts[e] !== undefined) {
+                        if (e === 'month') {
+                            date_arr.push(date_parts[e] - 1);
+                        }
+                        else if (e === 'week') {
+                            weeknum = date_parts[e];
+                        }
+                        else {
+                            date_arr.push(date_parts[e]);
+                        }
+                    }
+                    asDate = new Date(Date.UTC.apply(null, date_arr));
+                });
             }
 
             var col = {

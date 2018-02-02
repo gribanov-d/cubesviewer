@@ -191,14 +191,14 @@ angular.module('cv.cubes').service("cubesService", ['$rootScope', '$log', 'cvOpt
         if (includeZAxis && view.params.zaxis) {
 			var zaxis_order = cubesService.dim_to_arr(view, view.params.zaxis);
 			if (zaxis_order.length) {
-				orders.push.apply(orders, zaxis_order);
+                orders.push.apply(orders, zaxis_order);
 			}
         }
 
         if (includeXAxis && view.params.xaxis) {
 			var xaxis_order = cubesService.dim_to_arr(view, view.params.xaxis);
 			if (xaxis_order.length) {
-				orders.push.apply(orders, xaxis_order);
+                orders.push.apply(orders, xaxis_order);
 			}
             args.aggregates = [view.params.yaxis];
         }
@@ -384,7 +384,7 @@ angular.module('cv.cubes').service("cubesService", ['$rootScope', '$log', 'cvOpt
 			} else if (field == "quarter") {
 				values.push((Math.floor(tdate.getMonth() / 3) + 1));
 			} else if (field == "week") {
-				values.push(this._weekNumber(tdate));
+				// values.push(this._weekNumber(tdate));
 			} else if (field == "day") {
 				values.push(tdate.getDate());
 			} else {

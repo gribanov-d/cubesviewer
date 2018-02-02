@@ -226,9 +226,8 @@ angular.module('cv.studio').service("reststoreService", ['$rootScope', '$http', 
                 try {
                     var re = /(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2})/g;
                     var groups = re.exec(date_txt);
-                    view.last_updated = new Date(groups[1], groups[2], groups[3], groups[4], groups[5]);
                     // Month starts from 0
-                    view.last_updated.setMonth(view.last_updated.getMonth() - 1);
+                    view.last_updated = new Date(Date.UTC.apply(null, [groups[1], groups[2] - 1, groups[3], groups[4], groups[5]]));
                 } catch (e) {
                 }
             }
