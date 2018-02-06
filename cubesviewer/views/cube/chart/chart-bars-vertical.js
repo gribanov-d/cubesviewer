@@ -133,7 +133,10 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsVertica
 
             d3.select(container)
                 .datum(d)
-                .call(chart);
+                .call(chart)
+				.append('line')
+                .attr('x1', 30).attr('y1', 0).attr('x2', 10).attr('y2', 50)
+                .style("stroke-width", 2).style("stroke", "red").style("fill", "none");
 
             $scope.chartCtrl.cleanupTooltip();
 
@@ -155,6 +158,26 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsVertica
 
 
             $scope.chartCtrl.chart = chart;
+
+            // x values of vertical lines
+            var xgrid = [21, 34, 45];
+
+            // add vertical lines
+            var custLine = d3.select(container)
+                .select('.nv-multiBarWithLegend')
+                .append('g');
+
+            custLine.selectAll('line')
+                .data(xgrid)
+                .enter()
+                .append('line')
+                .attr({
+                    x1: function(d){ return chart.xAxis.scale()(d) },
+                    y1: function(d){ return chart.yAxis.scale()(0) },
+                    x2: function(d){ return chart.xAxis.scale()(d) },
+                    y2: function(d){ return chart.yAxis.scale()(100) }
+                })
+                .style("stroke", "#6b6669");
 
 	        return chart;
 
